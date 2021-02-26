@@ -121,7 +121,7 @@ global({
     fontFamily: "Varta",
     fontStyle: "normal",
     fontWeight: "300 700",
-    fontDisplay: "optional",
+    fontDisplay: "swap",
     src: 'url("/varta.woff2") format("woff2")',
   },
   "*": {
@@ -147,7 +147,7 @@ global({
     fontFamily: "Linden Hill",
     fontStyle: "italic",
     fontWeight: "400",
-    fontDisplay: "optional",
+    fontDisplay: "swap",
     src: 'url("/lindenhill-italic.woff") format("woff")',
   },
 })();
