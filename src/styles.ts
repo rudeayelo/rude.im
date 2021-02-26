@@ -13,6 +13,8 @@ export const {
     colors: {
       gray900: "hsl(205,5%,10%)",
       gray800: "hsl(205,5%,20%)",
+      gray700: "hsl(205,5%,25%)",
+      gray600: "hsl(205,5%,30%)",
       gray500: "hsl(205,5%,35%)",
       gray400: "hsl(205,5%,45%)",
       gray300: "hsl(205,5%,60%)",
@@ -122,7 +124,7 @@ global({
     fontStyle: "normal",
     fontWeight: "300 700",
     fontDisplay: "swap",
-    src: 'url("/varta.woff2") format("woff2")',
+    src: 'url("/fonts/varta.woff2") format("woff2")',
   },
   "*": {
     boxSizing: "border-box",
@@ -148,6 +150,6 @@ global({
     fontStyle: "italic",
     fontWeight: "400",
     fontDisplay: "swap",
-    src: 'url("/lindenhill-italic.woff") format("woff")',
+    src: 'url("/fonts/lindenhill-italic.woff") format("woff")',
   },
 })();

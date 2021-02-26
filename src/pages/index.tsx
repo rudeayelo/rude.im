@@ -113,9 +113,11 @@ const TwitterIcon = () => (
 const Home = () => {
   return (
     <>
-      <Band>
-        <Stack gap={16}>
-          <Logo />
+      <Band as="header">
+        <Logo />
+      </Band>
+      <main>
+        <Band as="section">
           <Stack gap={10}>
             <Stack gap={6}>
               <Heading>Hi, I’m Rude Ayelo</Heading>
@@ -132,26 +134,26 @@ const Home = () => {
               <span>Follow me</span>
             </FollowButton>
           </Stack>
-        </Stack>
-      </Band>
-      <Band css={{ background: "$gray100" }}>
-        <Stack gap={6}>
-          <Heading size="2">I was once told</Heading>
-          <Stack gap={4}>
-            <Quote>“You're not rude at all”</Quote>
-            <Text css={{ color: "$gray300", fontSize: "$4" }}>
-              —{" "}
-              <span
-                className={css({ color: "$gray500", fontWeight: "$bold" })()}
-              >
-                Student
-              </span>
-              , Ironhack, 2015
-            </Text>
+        </Band>
+        <Band as="section" css={{ background: "$gray100" }}>
+          <Stack gap={6}>
+            <Heading size="2">I was once told</Heading>
+            <Stack gap={4}>
+              <Quote>“You're not rude at all”</Quote>
+              <Text css={{ color: "$gray500", fontSize: "$4" }}>
+                —{" "}
+                <span
+                  className={css({ color: "$gray700", fontWeight: "$bold" })()}
+                >
+                  Student
+                </span>
+                , Ironhack, 2015
+              </Text>
+            </Stack>
           </Stack>
-        </Stack>
-      </Band>
-      <Footer>
+        </Band>
+      </main>
+      <Footer as="footer">
         <Stack gap={6}>
           <Heading size="2">Find me also on</Heading>
           <SocialLinks>
