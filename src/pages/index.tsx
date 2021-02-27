@@ -1,7 +1,7 @@
+import React from "react";
 import { styled, css, themes } from "src/styles";
 import { Logo } from "src/components/Logo";
 import { Stack } from "src/components/Stack";
-import { ReactNode } from "react";
 
 const Text = styled("p", {
   color: "$primary",
@@ -64,7 +64,7 @@ const SocialLink = ({
   children,
 }: {
   href: string;
-  children: ReactNode;
+  children: React.ReactNode;
 }) => (
   <li
     className={css({
@@ -117,6 +117,12 @@ const TwitterIcon = () => (
 );
 
 const Home = () => {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
   return (
     <>
       <Band className={themes.noir} as="header">

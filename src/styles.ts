@@ -127,13 +127,8 @@ global({
     unicodeRange:
       "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
   },
-  "*": {
-    boxSizing: "border-box",
-  },
-  "html, body, ul, ol": {
-    margin: 0,
-    padding: 0,
-  },
+  "*": { boxSizing: "border-box" },
+  "html, body, ul, ol": { margin: 0, padding: 0 },
   html: { background: "$bg" },
   body: {
     fontFamily: "$sans",
@@ -141,9 +136,7 @@ global({
     fontSize: "$4",
     lineHeight: "$4",
   },
-  li: {
-    listStyle: "none",
-  },
+  li: { listStyle: "none" },
 })();
 
 global({
@@ -157,7 +150,7 @@ global({
   },
 })();
 
-const morning = theme({
+const light = theme({
   colors: {
     primary: "$gray900",
     secondary: "$gray700",
@@ -187,8 +180,4 @@ const noir = theme({
   },
 });
 
-export const themes = {
-  morning,
-  dark,
-  noir,
-};
+export const themes = { light, dark, noir };
