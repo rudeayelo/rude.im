@@ -49,11 +49,8 @@ export const {
       16: "64px",
     },
     fonts: {
-      inter:
-        "Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
       varta:
         "Varta, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
-      fanwood: "Fanwood, MS Serif, New York, serif",
       lindenHill: "Linden Hill, MS Serif, New York, serif",
       sans: "$varta",
       serif: "$lindenHill",
