@@ -2,6 +2,7 @@ import React from "react";
 import { styled, css, themes } from "src/styles";
 import { Logo } from "src/components/Logo";
 import { Stack } from "src/components/Stack";
+import { useTheme } from "next-themes";
 
 const Text = styled("p", {
   color: "$primary",
@@ -118,6 +119,7 @@ const TwitterIcon = () => (
 
 const Home = () => {
   const [mounted, setMounted] = React.useState(false);
+  const { resolvedTheme } = useTheme();
 
   React.useEffect(() => setMounted(true), []);
 
@@ -126,7 +128,7 @@ const Home = () => {
   return (
     <>
       <Band className={themes.noir} as="header">
-        <Logo />
+        <Logo chrome={resolvedTheme === "dark"} />
       </Band>
       <main>
         <Band className={themes.noir}>
