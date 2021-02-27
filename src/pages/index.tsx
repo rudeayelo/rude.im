@@ -167,11 +167,11 @@ const Home = () => {
             </Stack>
           </Stack>
         </Band>
-        <Band className={themes.noir}>
+        {/* <Band className={themes.noir}>
           <Stack gap={6}>
             <Heading size="2">Side projects</Heading>
           </Stack>
-        </Band>
+        </Band> */}
       </main>
       <Footer as="footer">
         <Stack gap={6}>
