@@ -2,7 +2,7 @@
   "routes": [
     {
       "src": "/fonts/(.*)",
-      "headers": { "cache-control": "s-maxage=604800" },
+      "headers": { "cache-control": "public, immutable, max-age=31536000" },
       "dest": "/fonts/$1"
     }
   ]

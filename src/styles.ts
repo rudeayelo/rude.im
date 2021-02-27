@@ -12,7 +12,7 @@ export const {
   theme: {
     colors: {
       gray900: "hsl(205,5%,10%)",
-      gray800: "hsl(205,5%,20%)",
+      gray800: "hsl(205,5%,15%)",
       gray700: "hsl(205,5%,25%)",
       gray600: "hsl(205,5%,30%)",
       gray500: "hsl(205,5%,35%)",
@@ -24,8 +24,10 @@ export const {
 
       // Alias
       primary: "$gray900",
-      body: "$gray500",
-      link: "$blue500",
+      secondary: "$gray700",
+      tertiary: "$gray500",
+      link: "$gray800",
+      bg: "$gray100",
       logo: "$gray100",
     },
     space: {
@@ -125,6 +127,8 @@ global({
     fontWeight: "300 700",
     fontDisplay: "swap",
     src: 'url("/fonts/varta.woff2") format("woff2")',
+    unicodeRange:
+      "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
   },
   "*": {
     boxSizing: "border-box",
@@ -133,9 +137,10 @@ global({
     margin: 0,
     padding: 0,
   },
+  html: { background: "$bg" },
   body: {
     fontFamily: "$sans",
-    color: "$body",
+    color: "$primary",
     fontSize: "$4",
     lineHeight: "$4",
   },
@@ -151,5 +156,42 @@ global({
     fontWeight: "400",
     fontDisplay: "swap",
     src: 'url("/fonts/lindenhill-italic.woff") format("woff")',
+    unicodeRange: "U+0000-00FF",
   },
 })();
+
+const morning = theme({
+  colors: {
+    primary: "$gray900",
+    secondary: "$gray700",
+    tertiary: "$gray500",
+    link: "$gray800",
+    bg: "$gray100",
+  },
+});
+
+const dark = theme({
+  colors: {
+    primary: "$gray100",
+    secondary: "$gray300",
+    tertiary: "$gray400",
+    link: "$gray100",
+    bg: "$gray800",
+  },
+});
+
+const noir = theme({
+  colors: {
+    primary: "$gray100",
+    secondary: "$gray300",
+    tertiary: "$gray500",
+    link: "$gray900",
+    bg: "$gray900",
+  },
+});
+
+export const themes = {
+  morning,
+  dark,
+  noir,
+};

@@ -1,9 +1,10 @@
-import { styled, css } from "src/styles";
+import { styled, css, themes } from "src/styles";
 import { Logo } from "src/components/Logo";
 import { Stack } from "src/components/Stack";
+import { ReactNode } from "react";
 
 const Text = styled("p", {
-  color: "$gray100",
+  color: "$primary",
   fontWeight: "$regular",
   maxWidth: "800px",
   fontSize: "$7",
@@ -12,7 +13,7 @@ const Text = styled("p", {
 const Quote = styled(Text, {
   fontFamily: "$serif",
   fontStyle: "italic",
-  color: "$gray800",
+  color: "$primary",
   fontSize: "$8",
 });
 
@@ -21,7 +22,8 @@ const Heading = styled("h1", {
     size: {
       1: {
         fontSize: "$6",
-        color: "$gray400",
+        color: "$secondary",
+        fontWeight: "$black",
       },
       2: {
         fontSize: "$3",
@@ -39,49 +41,53 @@ const Heading = styled("h1", {
 const A = styled("a", {
   fontWeight: "$bold",
   textDecoration: "none",
-  variants: {
-    variant: {
-      normal: {
-        color: "$gray100",
-      },
-      invert: {
-        color: "$gray800",
-      },
-    },
-  },
-  defaultVariants: {
-    variant: "normal",
+  "&:visited": {
+    color: "currentcolor",
   },
 });
 
-const Band = styled("div", {
-  background: "$gray900",
+const Band = styled("section", {
+  background: "$bg",
   padding: "$10",
 });
 
 const Footer = styled(Band, {
-  background: "white",
+  background: "$bg",
 });
 
-const SocialLinks = styled("ul", {
+const SocialLinkList = styled("ul", {
   display: "flex",
 });
 
-const SocialItem = styled("li", {
-  fontSize: "$4",
-  marginRight: "$4",
-});
+const SocialLink = ({
+  href,
+  children,
+}: {
+  href: string;
+  children: ReactNode;
+}) => (
+  <li
+    className={css({
+      fontSize: "$4",
+      marginRight: "$4",
+    })()}
+  >
+    <A href={href} css={{ color: "$link" }}>
+      {children}
+    </A>
+  </li>
+);
 
 const FollowButton = styled("a", {
   display: "inline-flex",
   alignItems: "center",
   padding: "$2 $4 $2 $3",
-  // background: "linear-gradient(to bottom, $gray200, $gray300)",
-  background: "$gray100",
+  background: "linear-gradient(to bottom, $gray100, $gray200)",
+  boxShadow: "inset 0 1px 0 white, inset 0 3px 5px white",
   borderRadius: "4px",
   textDecoration: "none",
   "&:hover": {
-    background: "$gray200",
+    background: "$gray100",
   },
   svg: {
     marginRight: "$1",
@@ -113,11 +119,11 @@ const TwitterIcon = () => (
 const Home = () => {
   return (
     <>
-      <Band as="header">
+      <Band className={themes.noir} as="header">
         <Logo />
       </Band>
       <main>
-        <Band as="section">
+        <Band className={themes.noir}>
           <Stack gap={10}>
             <Stack gap={6}>
               <Heading>Hi, I’m Rude Ayelo</Heading>
@@ -135,15 +141,18 @@ const Home = () => {
             </FollowButton>
           </Stack>
         </Band>
-        <Band as="section" css={{ background: "$gray100" }}>
+        <Band>
           <Stack gap={6}>
             <Heading size="2">I was once told</Heading>
             <Stack gap={4}>
               <Quote>“You're not rude at all”</Quote>
-              <Text css={{ color: "$gray500", fontSize: "$4" }}>
+              <Text css={{ color: "$tertiary", fontSize: "$4" }}>
                 —{" "}
                 <span
-                  className={css({ color: "$gray700", fontWeight: "$bold" })()}
+                  className={css({
+                    color: "$secondary",
+                    fontWeight: "$bold",
+                  })()}
                 >
                   Student
                 </span>
@@ -152,27 +161,22 @@ const Home = () => {
             </Stack>
           </Stack>
         </Band>
+        <Band className={themes.noir}>
+          <Stack gap={6}>
+            <Heading size="2">Side projects</Heading>
+          </Stack>
+        </Band>
       </main>
       <Footer as="footer">
         <Stack gap={6}>
           <Heading size="2">Find me also on</Heading>
-          <SocialLinks>
-            <SocialItem>
-              <A variant="invert" href="https://github.com/rudeayelo">
-                Github
-              </A>
-            </SocialItem>
-            <SocialItem>
-              <A variant="invert" href="https://dribbble.com/Rude">
-                Dribbble
-              </A>
-            </SocialItem>
-            <SocialItem>
-              <A variant="invert" href="https://www.linkedin.com/in/rudeayelo/">
-                Linkedin
-              </A>
-            </SocialItem>
-          </SocialLinks>
+          <SocialLinkList>
+            <SocialLink href="https://github.com/rudeayelo">Github</SocialLink>
+            <SocialLink href="https://dribbble.com/Rude">Dribbble</SocialLink>
+            <SocialLink href="https://www.linkedin.com/in/rudeayelo/">
+              Linkedin
+            </SocialLink>
+          </SocialLinkList>
         </Stack>
       </Footer>
     </>
