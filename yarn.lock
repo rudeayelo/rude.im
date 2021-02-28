@@ -103,6 +103,33 @@
   resolved "https://registry.yarnpkg.com/@opentelemetry/context-base/-/context-base-0.14.0.tgz#c67fc20a4d891447ca1a855d7d70fa79a3533001"
   integrity sha512-sDOAZcYwynHFTbLo6n8kIbLiVF3a3BLkrmehJUyEbT9F+Smbi47kLGS2gG2g0fjBLR/Lr1InPD7kXL7FaTqEkw==
 
+"@radix-ui/react-polymorphic@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-polymorphic/-/react-polymorphic-0.0.5.tgz#7742695d5a47c732b3c5f627dfcd037c03f07f5b"
+  integrity sha512-XjAsBfFaa4FFYXZNPa9icHjDEqzvH+TVxQQwYJU2iY+6Ne1DhHXMLrGt/Vk0+BojMSPzg99NhjXROjQ4Fw30Hw==
+
+"@radix-ui/react-primitive@0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-primitive/-/react-primitive-0.0.4.tgz#c4ff716e8f5a57358beb75a3d447fefcd72c7a1b"
+  integrity sha512-FRiGr6WJRQG7/9i7bUHiXmyS9hLsBrAbMbsaqapYR8VPYlJyAavkNi5sXBXUoWa/VJdeZPI8jUKe/CRZ2ye5Lw==
+  dependencies:
+    "@radix-ui/react-polymorphic" "0.0.5"
+    "@radix-ui/utils" "0.0.3"
+
+"@radix-ui/react-visually-hidden@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-visually-hidden/-/react-visually-hidden-0.0.5.tgz#9e04587d070d36ba942c337523a23b3b9d296af7"
+  integrity sha512-8T8asSbt96IurSamS3uF+g2dc5vNieYCbHKloBn2dGq6yrr92RCxW1p0q5lX8IG9zDQq+shOPPq7wof1OPMv8Q==
+  dependencies:
+    "@radix-ui/react-polymorphic" "0.0.5"
+    "@radix-ui/react-primitive" "0.0.4"
+    "@radix-ui/utils" "0.0.3"
+
+"@radix-ui/utils@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@radix-ui/utils/-/utils-0.0.3.tgz#f20dfa8a5681d778a579ad695fe68fe6a2c0ee88"
+  integrity sha512-ruWffd3JjN8r+j8+LOIzTNEHzJsFcHOiSnQfl8KeBs+sCHGQgaI9IaRWxsaNXgrOYgPdBlZCbYG3qsLww2WR+w==
+
 "@stitches/core@^0.1.0-canary.12":
   version "0.1.0-canary.12"
   resolved "https://registry.yarnpkg.com/@stitches/core/-/core-0.1.0-canary.12.tgz#9254f5372607e57c2563d813907b972c5c411dcd"
@@ -1895,10 +1922,10 @@ type-fest@^0.7.1:
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.7.1.tgz#8dda65feaf03ed78f0a3f9678f1869147f7c5c48"
   integrity sha512-Ne2YiiGN8bmrmJJEuTWTLJR32nh/JdL1+PSicowtNb0WFpn59GK8/lfD61bVtzguz7b3PBt74nxpv/Pw5po5Rg==
 
-typescript@4.1.5:
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
-  integrity sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
+typescript@4.2.2:
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.2.tgz#1450f020618f872db0ea17317d16d8da8ddb8c4c"
+  integrity sha512-tbb+NVrLfnsJy3M59lsDgrzWIflR4d4TIUjz+heUnHZwdF7YsrMTKoRERiIvI2lvBG95dfpLxB21WZhys1bgaQ==
 
 unpipe@1.0.0:
   version "1.0.0"

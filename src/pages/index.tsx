@@ -3,6 +3,7 @@ import { styled, css, themes } from "src/styles";
 import { Logo } from "src/components/Logo";
 import { Stack } from "src/components/Stack";
 import { useTheme } from "next-themes";
+import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
 
 const Text = styled("p", {
   color: "$primary",
@@ -43,7 +44,10 @@ const A = styled("a", {
   fontWeight: "$bold",
   textDecoration: "none",
   "&:visited": {
-    color: "currentcolor",
+    color: "currentColor",
+  },
+  "&:focus": {
+    outline: "2px solid $colors$blue500",
   },
 });
 
@@ -90,6 +94,9 @@ const FollowButton = styled("a", {
   "&:hover": {
     background: "$gray100",
   },
+  "&:focus": {
+    outline: "2px solid $colors$blue500",
+  },
   svg: {
     marginRight: "$1",
     display: "block",
@@ -117,6 +124,59 @@ const TwitterIcon = () => (
   </svg>
 );
 
+const ThemeIcon = () => (
+  <svg
+    height="24"
+    width="24"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z"
+      fill="currentColor"
+    />
+    <path
+      d="M12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2ZM12 4V8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16V20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4Z"
+      fill="currentColor"
+      fillRule="evenodd"
+    />
+  </svg>
+);
+
+const ThemeToggle = () => {
+  const { setTheme, resolvedTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === "light" ? "dark" : "light");
+  };
+
+  return (
+    <button
+      className={css({
+        borderRadius: "22px",
+        position: "relative",
+        display: "inline-flex",
+        padding: "$3",
+        color: "$gray400",
+        border: 0,
+        cursor: "pointer",
+        background: "$gray800",
+        "&:hover": {
+          color: "$gray100",
+        },
+        "&:focus": {
+          outline: "none",
+          boxShadow: "0 0 0 2px $colors$blue500",
+        },
+      })()}
+      onClick={toggleTheme}
+    >
+      <ThemeIcon />
+      <VisuallyHidden.Root>Switch theme</VisuallyHidden.Root>
+    </button>
+  );
+};
+
 const Home = () => {
   const [mounted, setMounted] = React.useState(false);
   const { resolvedTheme } = useTheme();
@@ -128,7 +188,16 @@ const Home = () => {
   return (
     <>
       <Band className={themes.noir} as="header">
-        <Logo chrome={resolvedTheme === "dark"} />
+        <div
+          className={css({
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          })()}
+        >
+          <Logo chrome={resolvedTheme === "dark"} />
+          <ThemeToggle />
+        </div>
       </Band>
       <main>
         <Band className={themes.noir}>
@@ -136,10 +205,9 @@ const Home = () => {
             <Stack gap={6}>
               <Heading>Hi, I’m Rude Ayelo</Heading>
               <Text>
-                I do software design and development and I’m currently leading a
-                team at{" "}
-                <A href="https://www.new-work.se/en/">New Work (aka XING)</A>.
-                I’m into design systems and enjoy building side projects to
+                I do UI design and development and I’m currently leading a team
+                at <A href="https://www.new-work.se/en/">New Work (aka XING)</A>
+                . I’m into design systems and enjoy building side projects to
                 scratch my own itches.
               </Text>
             </Stack>
