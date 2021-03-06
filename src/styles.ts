@@ -11,24 +11,37 @@ export const {
 } = createCss({
   theme: {
     colors: {
-      gray900: "hsl(205,5%,10%)",
-      gray800: "hsl(205,5%,15%)",
+      gray900: "hsl(205,5%,7%)",
+      gray800: "hsl(205,5%,10%)",
+      gray750: "hsl(205,5%,15%)",
       gray700: "hsl(205,5%,25%)",
       gray600: "hsl(205,5%,30%)",
       gray500: "hsl(205,5%,35%)",
       gray400: "hsl(205,5%,45%)",
-      gray300: "hsl(205,5%,60%)",
-      gray200: "hsl(205,5%,75%)",
+      gray300: "hsl(205,5%,65%)",
+      gray200: "hsl(205,5%,80%)",
       gray100: "hsl(205,5%,90%)",
+      gray50: "hsl(205,5%,95%)",
       blue500: "hsl(205,90%,45%)",
 
       // Alias
       primary: "$gray900",
       secondary: "$gray700",
       tertiary: "$gray500",
-      link: "$gray800",
-      bg: "$gray100",
-      logo: "$gray100",
+
+      darkPrimary: "$gray100",
+      darkSecondary: "$gray200",
+      darkTertiary: "$gray300",
+
+      link: "$blue500",
+      mutedLink: "$gray900",
+
+      brightBg: "$gray50",
+      lightBg: "$gray100",
+      darkBg: "$gray800",
+      noirBg: "$gray900",
+
+      border: "$gray900",
     },
     space: {
       1: "4px",
@@ -67,7 +80,7 @@ export const {
       2: "12px",
       3: "14px",
       4: "16px",
-      5: "20px",
+      5: "18px",
       6: "24px",
       7: "30px",
       8: "40px",
@@ -83,8 +96,8 @@ export const {
       6: "1.3",
       7: "1.3",
       8: "1.1",
-      9: "0.9",
-      10: "0.9",
+      9: "1",
+      10: "1",
     },
     letterSpacings: {},
     sizes: {},
@@ -96,19 +109,24 @@ export const {
     transitions: {},
   },
   utils: {
-    fontSize: ({ theme }) => (value: string) => ({
-      fontSize: value,
-      margin: 0,
-      ...leadingTrim({
-        lineHeight: theme.lineHeights[value.slice(1)],
-        reference: {
-          fontSize: 40,
-          lineHeight: 1,
-          topCrop: 0,
-          bottomCrop: 12,
-        },
-      }),
-    }),
+    fontSize: ({ theme }) => (value: string) => {
+      const sizes = value.match(/\$(\d+)/g);
+      const largestSize = sizes[sizes.length - 1].substring(1);
+
+      return {
+        fontSize: value,
+        margin: 0,
+        ...leadingTrim({
+          lineHeight: Number(theme.lineHeights[largestSize]),
+          reference: {
+            fontSize: 40,
+            lineHeight: 1,
+            topCrop: 0,
+            bottomCrop: 12,
+          },
+        }),
+      };
+    },
   },
   conditions: {
     sm: "@media (min-width: 576px)",
@@ -129,7 +147,7 @@ global({
   },
   "*": { boxSizing: "border-box" },
   "html, body, ul, ol": { margin: 0, padding: 0 },
-  html: { background: "$bg" },
+  html: { background: "$lightBg" },
   body: {
     fontFamily: "$sans",
     color: "$primary",
@@ -150,34 +168,24 @@ global({
   },
 })();
 
-const light = theme({
-  colors: {
-    primary: "$gray900",
-    secondary: "$gray700",
-    tertiary: "$gray500",
-    link: "$gray800",
-    bg: "$gray100",
-  },
-});
-
-const dark = theme({
+export const darkTheme = theme({
   colors: {
     primary: "$gray100",
-    secondary: "$gray300",
-    tertiary: "$gray400",
-    link: "$gray100",
-    bg: "$gray800",
+    secondary: "$gray200",
+    tertiary: "$gray300",
+
+    darkPrimary: "$gray100",
+    darkSecondary: "$gray200",
+    darkTertiary: "$gray300",
+
+    link: "$blue500",
+    mutedLink: "$gray100",
+
+    brightBg: "$gray900",
+    lightBg: "$gray800",
+    darkBg: "$gray900",
+    noirBg: "$gray900",
+
+    border: "$gray100",
   },
 });
-
-const noir = theme({
-  colors: {
-    primary: "$gray100",
-    secondary: "$gray300",
-    tertiary: "$gray500",
-    link: "$gray900",
-    bg: "$gray900",
-  },
-});
-
-export const themes = { light, dark, noir };

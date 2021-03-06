@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import { ThemeProvider } from "next-themes";
-import { themes } from "src/styles";
+import { darkTheme } from "src/styles";
 
 const App = ({ Component, pageProps }) => {
   return (
@@ -19,7 +19,7 @@ const App = ({ Component, pageProps }) => {
         attribute="class"
         defaultTheme="system"
         value={{
-          dark: themes.dark.className,
+          dark: darkTheme.className,
           light: "light",
         }}
       >
