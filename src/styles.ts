@@ -150,9 +150,10 @@ global({
   html: { background: "$lightBg" },
   body: {
     fontFamily: "$sans",
-    color: "$primary",
     fontSize: "$4",
+    fontWeight: "$regular",
     lineHeight: "$4",
+    color: "$primary",
   },
   li: { listStyle: "none" },
 })();
