@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { css } from "src/styles";
 import { useTheme } from "next-themes";
 import * as VisuallyHidden from "@radix-ui/react-visually-hidden";
@@ -22,14 +23,24 @@ const toggleButton = css({
 });
 
 export const ThemeToggle = () => {
+  const [mounted, setMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "light" ? "dark" : "light");
   };
 
   return (
-    <button className={toggleButton()} onClick={toggleTheme}>
+    <button
+      className={toggleButton()}
+      onClick={toggleTheme}
+      data-splitbee-event="Switch theme"
+      data-splitbee-event-type={resolvedTheme === "light" ? "dark" : "light"}
+    >
       <ThemeIcon />
       <VisuallyHidden.Root>Switch theme</VisuallyHidden.Root>
     </button>
