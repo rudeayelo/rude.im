@@ -43,7 +43,7 @@ const FollowButton = styled("a", {
     width: "24px",
   },
   span: {
-    fontWeight: "$black",
+    fontWeight: "$bold",
     fontSize: "$4",
     whiteSpace: "pre",
   },
@@ -60,7 +60,7 @@ const Home = ({ posts }) => (
               css={{
                 fontSize: "clamp($5, 4vw, $6)",
                 color: "$darkTertiary",
-                fontWeight: "$black",
+                fontWeight: "$bold",
               }}
             >
               Hi, I’m Rude Ayelo
@@ -72,9 +72,14 @@ const Home = ({ posts }) => (
               }}
             >
               I do UI design and development and I’m currently leading a team at{" "}
-              <A href="https://www.new-work.se/en/">New Work (aka XING)</A>. I’m
-              into design systems and enjoy building side projects to scratch my
-              own itches.
+              <A
+                href="https://www.new-work.se/en/"
+                css={{ color: "currentColor" }}
+              >
+                New Work (aka XING)
+              </A>
+              . I’m into design systems and enjoy building side projects to
+              scratch my own itches.
             </Text>
           </Stack>
           <FollowButton href="https://twitter.com/Rude">
@@ -83,7 +88,7 @@ const Home = ({ posts }) => (
           </FollowButton>
         </Stack>
       </Band>
-      <Band as="section" variant="bright">
+      {/* <Band as="section" variant="bright">
         <Stack>
           <SectionHeading>I wrote about</SectionHeading>
           <ul className={articleGrid()}>
@@ -98,14 +103,14 @@ const Home = ({ posts }) => (
                 >
                   <A href={`/blog/${post.slug}`}>{post.title}</A>
                 </Text>
-                <Text css={{ color: "$tertiary" }}>
+                <Text css={{ color: "$tertiary", fontSize: "$4" }}>
                   {formatShortDate(post.publishedAt)}
                 </Text>
               </Stack>
             ))}
           </ul>
         </Stack>
-      </Band>
+      </Band> */}
     </main>
     <SiteFooter />
   </>

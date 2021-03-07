@@ -3,4 +3,110 @@ title: Taming vertical white-space with leading-trim
 publishedAt: "2021-03-03"
 ---
 
-Hello world
+Alright, let's add some types to this. For functions, you need to consider the types coming in and the types going out. Let's start with the input: props. To start, let's go with a simple type for the props (we'll improve it later):
+
+    This is a code block.
+
+```jsx
+export const MDXComponents = {
+  a: Link,
+  h1: (props) => (
+    <Text
+      {...props}
+      as="h1"
+      css={{ fontSize: "$8", fontWeight: "$black", marginBottom: "$6" }}
+    />
+  ),
+  h2: (props) => (
+    <Text
+      {...props}
+      as="h2"
+      css={{ fontSize: "$7", fontWeight: "$black", marginBottom: "$6" }}
+    />
+  ),
+  h3: (props) => (
+    <Text
+      {...props}
+      as="h3"
+      css={{ fontSize: "$6", fontWeight: "$black", marginBottom: "$6" }}
+    />
+  ),
+  p: ({ className, ...props }) => (
+    <div className={`${css({ marginBottom: "$6" })()} ${className}`}>
+      <Text {...props} css={{ fontSize: "$5" }} />
+    </div>
+  ),
+  pre: ({ className, ...props }) => <Pre {...props} />,
+  ul: ({ className, ...props }) => <List {...props} />,
+  ol: ({ className, ...props }) => <List {...props} />,
+  li: ({ className, ...props }) => <Text {...props} css={{ fontSize: "$5" }} />,
+  hr: (props) => (
+    <Divider css={{ marginTop: "$10", marginBottom: "$10" }} {...props} />
+  ),
+};
+```
+
+# Header 1
+
+## Header 2
+
+### Header 3
+
+#### Header 4
+
+##### Header 5
+
+###### Header 6
+
+> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi, viverra nec, fringilla in, laoreet vitae, risus.
+
+> ## This is a header.
+>
+> 1. This is the first list item.
+> 2. This is the second list item.
+>
+> Here's some example code:
+>
+>     Markdown.generate();
+
+- Red
+- Green
+- Blue
+
+* Red
+* Green
+* Blue
+
+1. Buy flour and salt
+1. Mix together with water
+1. Bake
+
+---
+
+---
+
+---
+
+---
+
+---
+
+This is [an example](http://example.com "Example") link.
+
+[This link](http://example.com) has no title attr.
+
+This is [an example][id] reference-style link.
+
+[id]: http://example.com "Optional Title"
+
+_single asterisks_
+
+_single underscores_
+
+**double asterisks**
+
+**double underscores**
+
+This paragraph has some `code` in it.
+
+![Alt Text](https://get.svg.workers.dev/?s=64&f=gray "Image Title")

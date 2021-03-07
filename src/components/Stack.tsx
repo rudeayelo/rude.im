@@ -70,12 +70,9 @@ export const Stack = ({
             )}
             <StackChild
               as={determineChild(as)}
-              index={i}
+              key={i}
               css={{
                 marginTop: i > 0 ? `$${gap}` : undefined,
-                ...(child.props?.alignSelf && {
-                  alignSelf: child.props?.alignSelf,
-                }),
               }}
             >
               {child}

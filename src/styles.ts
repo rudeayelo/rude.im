@@ -40,8 +40,10 @@ export const {
       lightBg: "$gray100",
       darkBg: "$gray800",
       noirBg: "$gray900",
+      codeBg: "#fbfbfb",
 
       border: "$gray900",
+      codeBorder: "$gray100",
     },
     space: {
       1: "4px",
@@ -62,18 +64,18 @@ export const {
       16: "64px",
     },
     fonts: {
-      varta:
-        "Varta, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
+      sourceSans:
+        "Source Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol",
       lindenHill: "Linden Hill, MS Serif, New York, serif",
-      sans: "$varta",
+      sans: "$sourceSans",
       serif: "$lindenHill",
       mono:
         "SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
     },
     fontWeights: {
-      regular: "300",
+      regular: "400",
       bold: "600",
-      black: "700",
+      black: "900",
     },
     fontSizes: {
       1: "10px",
@@ -121,8 +123,8 @@ export const {
           reference: {
             fontSize: 40,
             lineHeight: 1,
-            topCrop: 0,
-            bottomCrop: 12,
+            topCrop: 4,
+            bottomCrop: 8,
           },
         }),
       };
@@ -136,15 +138,6 @@ export const {
 });
 
 global({
-  "@font-face": {
-    fontFamily: "Varta",
-    fontStyle: "normal",
-    fontWeight: "300 700",
-    fontDisplay: "swap",
-    src: 'url("/fonts/varta.woff2") format("woff2")',
-    unicodeRange:
-      "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
-  },
   "*": { boxSizing: "border-box" },
   "html, body, ul, ol": { margin: 0, padding: 0 },
   html: { background: "$lightBg" },
@@ -156,6 +149,11 @@ global({
     color: "$primary",
   },
   li: { listStyle: "none" },
+  "code[class*=language-], pre[class*=language-]": {
+    fontFamily: "$mono",
+    marginTop: 0,
+    marginBottom: "$4",
+  },
 })();
 
 global({
@@ -166,6 +164,18 @@ global({
     fontDisplay: "swap",
     src: 'url("/fonts/lindenhill-italic.woff") format("woff")',
     unicodeRange: "U+0000-00FF",
+  },
+})();
+
+global({
+  "@font-face": {
+    fontFamily: "Source Sans",
+    fontStyle: "normal",
+    fontWeight: "200 900",
+    fontDisplay: "swap",
+    src: 'url("/fonts/SourceSans3VF-Roman.otf.woff2") format("woff2")',
+    unicodeRange:
+      "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
   },
 })();
 
@@ -186,7 +196,9 @@ export const darkTheme = theme({
     lightBg: "$gray800",
     darkBg: "$gray900",
     noirBg: "$gray900",
+    codeBg: "#011627",
 
     border: "$gray100",
+    codeBorder: "#0D2A45",
   },
 });

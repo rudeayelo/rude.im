@@ -7,9 +7,6 @@ export const A = styled("a", {
   "&:focus": {
     outline: "2px solid $colors$blue500",
   },
-  "p > &": {
-    color: "currentColor",
-  },
 
   variants: {
     variant: {
@@ -32,5 +29,5 @@ export const Link = (props) => {
     );
   }
 
-  return <a target="_blank" rel="noopener noreferrer" {...props} />;
+  return <A target="_blank" rel="noopener noreferrer" {...props} />;
 };
