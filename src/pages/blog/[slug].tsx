@@ -8,6 +8,7 @@ import { SiteFooter } from "src/components/SiteFooter";
 import { Stack } from "src/components/Stack";
 import { Text } from "src/components/Text";
 import { formatShortDate } from "src/lib/dates";
+import { PrismTheme } from "src/components/PrismTheme";
 
 const layout = css({
   maxWidth: "700px",
@@ -20,6 +21,7 @@ const Blog = ({ mdxSource, frontMatter }) => {
 
   return (
     <>
+      <PrismTheme />
       <SiteHeader />
       <Band as="main" variant="bright">
         <Stack as="article" gap={8} className={layout()}>
@@ -28,18 +30,17 @@ const Blog = ({ mdxSource, frontMatter }) => {
               as="h1"
               css={{
                 fontSize: "clamp($7, 5vw, $9)",
-                letterSpacing: ".5px",
                 color: "$primary",
                 fontWeight: "$black",
               }}
             >
               {frontMatter.title}
             </Text>
-            <Text css={{ color: "$secondary" }}>
+            <Text css={{ color: "$secondary", fontSize: "$5" }}>
               {formatShortDate(frontMatter.publishedAt)}
             </Text>
           </Stack>
-          <div>{content}</div>
+          <>{content}</>
         </Stack>
       </Band>
       <SiteFooter />

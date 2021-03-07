@@ -13,6 +13,8 @@ const App = ({ Component, pageProps }) => {
 
         <meta name="theme-color" content="#fffff" />
 
+        <script async src="/bee.js"></script>
+
         <title>Rude Ayelo</title>
       </Head>
       <ThemeProvider
