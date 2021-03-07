@@ -82,7 +82,10 @@ const Home = ({ posts }) => (
               scratch my own itches.
             </Text>
           </Stack>
-          <FollowButton href="https://twitter.com/Rude">
+          <FollowButton
+            href="https://twitter.com/Rude"
+            data-splitbee-event="Follow on Twitter CTA"
+          >
             <TwitterIcon />
             <span>Follow me</span>
           </FollowButton>
