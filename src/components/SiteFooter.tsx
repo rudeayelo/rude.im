@@ -29,7 +29,12 @@ const SocialLink = ({
   children: React.ReactNode;
 }) => (
   <li className={socialLink()}>
-    <A href={href} variant="muted">
+    <A
+      href={href}
+      variant="muted"
+      data-splitbee-event="External Link"
+      data-splitbee-event-type={children}
+    >
       {children}
     </A>
   </li>

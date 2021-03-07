@@ -31,16 +31,17 @@ export const ThemeToggle = () => {
   if (!mounted) return null;
 
   const toggleTheme = () => {
-    setTheme(resolvedTheme === "light" ? "dark" : "light");
+    const targetTheme = resolvedTheme === "light" ? "dark" : "light";
+
+    (window as any).splitbee.track("Switch theme", {
+      type: targetTheme,
+    });
+
+    setTheme(targetTheme);
   };
 
   return (
-    <button
-      className={toggleButton()}
-      onClick={toggleTheme}
-      data-splitbee-event="Switch theme"
-      data-splitbee-event-type={resolvedTheme === "light" ? "dark" : "light"}
-    >
+    <button className={toggleButton()} onClick={toggleTheme}>
       <ThemeIcon />
       <VisuallyHidden.Root>Switch theme</VisuallyHidden.Root>
     </button>
