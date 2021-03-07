@@ -44,6 +44,7 @@ export default class Document extends NextDocument {
             type="font/woff2"
             crossOrigin="anonymous"
           />
+          <script async data-api="/_hive" src="/bee.js"></script>
         </Head>
         <body>
           <Main />
