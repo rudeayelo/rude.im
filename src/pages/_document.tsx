@@ -32,7 +32,7 @@ export default class Document extends NextDocument {
         <Head>
           <link
             rel="preload"
-            href="/fonts/varta.woff2"
+            href="/fonts/sourcesans-variable.woff2"
             as="font"
             type="font/woff2"
             crossOrigin="anonymous"
