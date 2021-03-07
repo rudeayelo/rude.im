@@ -33,9 +33,7 @@ export const ThemeToggle = () => {
   const toggleTheme = () => {
     const targetTheme = resolvedTheme === "light" ? "dark" : "light";
 
-    (window as any).splitbee.track("Switch theme", {
-      type: targetTheme,
-    });
+    (window as any).splitbee.track(`Switch to ${targetTheme} theme`);
 
     setTheme(targetTheme);
   };
