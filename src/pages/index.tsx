@@ -75,6 +75,7 @@ const Home = ({ posts }) => (
               <A
                 href="https://www.new-work.se/en/"
                 css={{ color: "currentColor" }}
+                data-splitbee-event="Clicked on New Work link"
               >
                 New Work (aka XING)
               </A>
