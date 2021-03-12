@@ -1101,17 +1101,17 @@
   resolved "https://registry.yarnpkg.com/@radix-ui/utils/-/utils-0.0.3.tgz#f20dfa8a5681d778a579ad695fe68fe6a2c0ee88"
   integrity sha512-ruWffd3JjN8r+j8+LOIzTNEHzJsFcHOiSnQfl8KeBs+sCHGQgaI9IaRWxsaNXgrOYgPdBlZCbYG3qsLww2WR+w==
 
-"@stitches/core@^0.1.0-canary.12":
-  version "0.1.0-canary.12"
-  resolved "https://registry.yarnpkg.com/@stitches/core/-/core-0.1.0-canary.12.tgz#9254f5372607e57c2563d813907b972c5c411dcd"
-  integrity sha512-JP2OVj1yU3TijCkOr9pg0lHeLzJd7LnOeUsSOmp+H9R/LTFCrYKDuFufI71S7zlupJNBQnq76SrJXdov0pdPNA==
+"@stitches/core@^0.1.0-canary.18":
+  version "0.1.0-canary.18"
+  resolved "https://registry.yarnpkg.com/@stitches/core/-/core-0.1.0-canary.18.tgz#e1c225835e7e141e9dec817cb806f76aa51e3d94"
+  integrity sha512-SDLzhMRKnTgECRt7javU8z6aiB4nh8aYVHsASF8plMFomuyhfa5sMdHYbR6nO9SQ5ClpqaBw237cs5IMokxMwQ==
 
-"@stitches/react@0.1.0-canary.12":
-  version "0.1.0-canary.12"
-  resolved "https://registry.yarnpkg.com/@stitches/react/-/react-0.1.0-canary.12.tgz#ef38e0ecfa037ff7d7f3f21d5cdbbdd87ad6044a"
-  integrity sha512-E6VsTJ2rKW89MTcfV0+PdzdFjA8GGjZ0sYFtG9f+IAXP73MGsNaHYKuulfMDDzCByFFMW9PkcDMH65xAMlyMvA==
+"@stitches/react@0.1.0-canary.18":
+  version "0.1.0-canary.18"
+  resolved "https://registry.yarnpkg.com/@stitches/react/-/react-0.1.0-canary.18.tgz#60f27cd8d74342ff1d453d821ca444597e9bea0f"
+  integrity sha512-78em5zB2544rEp7hDzo/qvjQixdi+xggJ/Bbp4gxU6SQCKLchn2yMsA7wjiZxugHE5Ln0sQuq6PNqacjreyDig==
   dependencies:
-    "@stitches/core" "^0.1.0-canary.12"
+    "@stitches/core" "^0.1.0-canary.18"
 
 "@types/hast@^2.0.0":
   version "2.3.1"
@@ -2987,6 +2987,11 @@ prebuild-install@^6.0.0:
     tar-fs "^2.0.0"
     tunnel-agent "^0.6.0"
     which-pm-runs "^1.0.0"
+
+prettier@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
+  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
 
 prismjs@~1.17.0:
   version "1.17.1"
