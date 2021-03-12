@@ -33,7 +33,7 @@ const SocialLink = ({
     <A
       href={href}
       variant="muted"
-      data-splitbee-event={`Clicked on ${children} link`}
+      data-splitbee-event={`Click on ${children} link`}
     >
       {children}
     </A>

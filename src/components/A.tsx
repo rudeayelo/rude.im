@@ -29,5 +29,12 @@ export const Link = (props) => {
     );
   }
 
-  return <A target="_blank" rel="noopener noreferrer" {...props} />;
+  return (
+    <A
+      target="_blank"
+      rel="noopener noreferrer"
+      data-splitbee-event={`Click on ${href.substr(8)}`}
+      {...props}
+    />
+  );
 };
