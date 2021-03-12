@@ -12,8 +12,6 @@ const App = ({ Component, pageProps }) => {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
         <meta name="theme-color" content="#fffff" />
-
-        <title>Rude Ayelo</title>
       </Head>
       <ThemeProvider
         attribute="class"

@@ -1,25 +1,10 @@
 import React from "react";
 import { styled, theme } from "src/styles";
 import { Divider } from "src/components/Divider";
+import { determineChild } from "src/lib/layout";
 
 type Align = "start" | "center" | "end";
 type Gap = Extract<keyof typeof theme["space"], string | number>;
-
-const determineChild = (parent) =>
-  typeof parent === "string"
-    ? {
-        ul: "li",
-        ol: "li",
-        span: "span",
-        p: "span",
-        h1: "span",
-        h2: "span",
-        h3: "span",
-        h4: "span",
-        h5: "span",
-        h6: "span",
-      }[parent] || "div"
-    : parent;
 
 const alignMap = {
   start: "flex-start",
@@ -61,7 +46,7 @@ export const Stack = ({
       (child: React.Component<any, any, any>, i) =>
         child && (
           <>
-            {i > 0 && divider && (
+            {i > 0 && React.Children.toArray(children).length > 1 && divider && (
               <Divider
                 css={{
                   marginTop: i > 0 ? `$${gap}` : undefined,
@@ -72,7 +57,10 @@ export const Stack = ({
               as={determineChild(as)}
               key={i}
               css={{
-                marginTop: i > 0 ? `$${gap}` : undefined,
+                marginTop:
+                  i > 0 && React.Children.toArray(children).length > 1
+                    ? `$${gap}`
+                    : undefined,
               }}
             >
               {child}

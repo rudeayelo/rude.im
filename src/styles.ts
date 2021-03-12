@@ -111,20 +111,36 @@ export const {
     transitions: {},
   },
   utils: {
-    fontSize: ({ theme }) => (value: string) => {
-      const sizes = value.match(/\$(\d+)/g);
-      const largestSize = sizes[sizes.length - 1].substring(1);
+    textSize: ({ theme }) => (value: string) => {
+      const values = value.match(/[^\/]+/g).map((v) => v.trim());
+
+      const fontSize = values[0];
+      const lineHeight = values[1];
+      const correctionTop = values[2];
+      const correctionBottom = values[3];
+
+      const clampedFontSizes = fontSize.match(/\$(\d+)/g);
+      const lineHeightLiteral = lineHeight && lineHeight.match(/(\d+)/g)[0];
+      const lineHeightScale = clampedFontSizes[
+        clampedFontSizes.length - 1
+      ].substring(1);
 
       return {
-        fontSize: value,
+        fontSize,
         margin: 0,
         ...leadingTrim({
-          lineHeight: Number(theme.lineHeights[largestSize]),
+          lineHeight:
+            Number(lineHeightLiteral) ||
+            Number(theme.lineHeights[lineHeightScale]),
           reference: {
             fontSize: 40,
             lineHeight: 1,
             topCrop: 4,
             bottomCrop: 8,
+          },
+          correction: {
+            top: Number(correctionTop),
+            bottom: Number(correctionBottom),
           },
         }),
       };
@@ -138,12 +154,31 @@ export const {
 });
 
 global({
+  "@font-face": [
+    {
+      fontFamily: "Source Sans",
+      fontStyle: "normal",
+      fontWeight: "200 900",
+      fontDisplay: "swap",
+      src: 'url("/fonts/sourcesans-variable.woff2") format("woff2")',
+      unicodeRange:
+        "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    },
+    {
+      fontFamily: "Linden Hill",
+      fontStyle: "italic",
+      fontWeight: "400",
+      fontDisplay: "swap",
+      src: 'url("/fonts/lindenhill-italic.woff") format("woff")',
+      unicodeRange: "U+0000-00FF",
+    },
+  ],
   "*": { boxSizing: "border-box" },
   "html, body, ul, ol": { margin: 0, padding: 0 },
   html: { background: "$lightBg" },
   body: {
     fontFamily: "$sans",
-    fontSize: "$4",
+    textSize: "$4",
     fontWeight: "$regular",
     lineHeight: "$4",
     color: "$primary",
@@ -152,30 +187,7 @@ global({
   "code[class*=language-], pre[class*=language-]": {
     fontFamily: "$mono",
     marginTop: 0,
-    marginBottom: "$4",
-  },
-})();
-
-global({
-  "@font-face": {
-    fontFamily: "Linden Hill",
-    fontStyle: "italic",
-    fontWeight: "400",
-    fontDisplay: "swap",
-    src: 'url("/fonts/lindenhill-italic.woff") format("woff")',
-    unicodeRange: "U+0000-00FF",
-  },
-})();
-
-global({
-  "@font-face": {
-    fontFamily: "Source Sans",
-    fontStyle: "normal",
-    fontWeight: "200 900",
-    fontDisplay: "swap",
-    src: 'url("/fonts/sourcesans-variable.woff2") format("woff2")',
-    unicodeRange:
-      "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+    marginBottom: "$8",
   },
 })();
 

@@ -45,6 +45,9 @@ export async function getAllFilesFrontMatter(type) {
   const files = fs.readdirSync(path.join(root, "src", "data", type));
 
   return files.reduce((allPosts, postSlug) => {
+    if (postSlug.substr(postSlug.lastIndexOf(".") + 1) !== "mdx")
+      return [...allPosts];
+
     const source = fs.readFileSync(
       path.join(root, "src", "data", type, postSlug),
       "utf8"
