@@ -3,7 +3,7 @@ import { css, styled } from "src/styles";
 import { Link } from "src/components/A";
 import { Text } from "src/components/Text";
 import { Divider } from "src/components/Divider";
-import { LeadingTrimDemo } from "src/data/blog/LeadingTrimDemo";
+import { LeadingTrimDemo } from "src/components/LeadingTrimDemo";
 
 const Pre = styled("pre", {
   marginTop: 0,
