@@ -99,7 +99,7 @@ const Home = ({ posts }) => (
               I do UI design and development and I’m currently leading a team at{" "}
               <A
                 href="https://www.new-work.se/en/"
-                css={{ color: "currentColor" }}
+                variant="discrete"
                 data-splitbee-event="Clicked on New Work link"
               >
                 New Work (aka XING)

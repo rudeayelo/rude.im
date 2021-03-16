@@ -3,17 +3,26 @@ import NextLink from "next/link";
 
 export const A = styled("a", {
   fontWeight: "$bold",
-  color: "$link",
   "&:focus": {
     outline: "2px solid $colors$blue500",
   },
 
   variants: {
     variant: {
+      default: {
+        color: "$link",
+      },
       muted: {
         color: "$mutedLink",
       },
+      discrete: {
+        color: "currentColor",
+      },
     },
+  },
+
+  defaultVariants: {
+    variant: "default",
   },
 });
 
