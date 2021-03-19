@@ -60,6 +60,7 @@ const Blog = ({ mdxSource, frontMatter }) => {
                 textSize: "clamp($7, 5vw, $9)",
                 color: "$primary",
                 fontWeight: "$black",
+                letterSpacing: "$title",
               }}
             >
               {frontMatter.title}

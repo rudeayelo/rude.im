@@ -1,0 +1,130 @@
+---
+title: Dark theme with Stitches and Next.js
+summary:
+  Easily implement a dark (or any other) theme with Stitches in Next.js using
+  next-themes
+publishedAt: "2021-03-16"
+image: https://i.microlink.io/https%3A%2F%2Fcards.microlink.io%2F%3Fpreset%3Dsimple%26p%3D2gRyPD4KICAgIDxMaW5rCiAgICAgIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzMj9mYW1pbHk9U291cmNlK1NhbnMrUHJvOndnaHRAMzAwOzYwMDs5MDAmZGlzcGxheT1ibG9jayIKICAgICAgcmVsPSJzdHlsZXNoZWV0IgogICAgLz4KICAgIDxGbGV4CiAgICAgIHN4PXt7CiAgICAgICAgYWxpZ25JdGVtczogImZsZXgtc3RhcnQiLAogICAgICAgIGp1c3RpZnlDb250ZW50OiAiZmxleC1zdGFydCIsCiAgICAgICAgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgYmc6ICJoc2woMjA1LDUlLDclKSIsCiAgICAgICAgcGFkZGluZzogIjQwcHgiLAogICAgICB9fQogICAgPgogICAgICA8aW1nIHNyYz0iaHR0cHM6Ly9ydWRlLmltL2Zhdmljb24tZGFyay5zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiAvPgogICAgICA8RmxleAogICAgICAgIHN4PXt7CiAgICAgICAgICBtYXJnaW5Ub3A6IDQsCiAgICAgICAgICBhbGlnbkl0ZW1zOiAiZmxleC1zdGFydCIsCiAgICAgICAgICBqdXN0aWZ5Q29udGVudDogImZsZXgtc3RhcnQiLAogICAgICAgICAgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgfX0KICAgICAgPgogICAgICAgIDxUZXh0CiAgICAgICAgICBzeD17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiU291cmNlIFNhbnMgUHJvIiwKICAgICAgICAgICAgZm9udFNpemU6IDUsCiAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDYwMCwKICAgICAgICAgICAgY29sb3I6ICJoc2woMjA1LDUlLDY1JSkiLAogICAgICAgICAgfX0KICAgICAgICA-CiAgICAgICAgICBSdWRlIEF5ZWxvCiAgICAgICAgPC9UZXh0PgogICAgICAgIDxUZXh0CiAgICAgICAgICBzeD17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiU291cmNlIFNhbnMgUHJvIiwKICAgICAgICAgICAgZm9udFNpemU6ICI2NnB4IiwKICAgICAgICAgICAgZm9udFdlaWdodDogNzAwLAogICAgICAgICAgICBsaW5lSGVpZ2h0OiAxLAogICAgICAgICAgICBjb2xvcjogImhzbCgyMDUsNSUsOTAlKSIsCiAgICAgICAgICB9fQogICAgICAgID4KICAgICAgICAgIERhcmsgdGhlbWUgd2l0aCBTdGl0Y2hlcyBhbmQgTmV4dC5qcwogICAgICAgIDwvVGV4dD4KICAgICAgPC9GbGV4PgogICAgPC9GbGV4PgogIDwvPg%23
+---
+
+It seems like you can't make a website nowadays without pushing in **dark
+mode**. Let's see how it's done using two of my most favourite pieces of
+software ever: [Next.js][next] and [Stitches][stitches]:
+
+First of all, you'll need to setup Stitches and your dark theme:
+
+```tsx
+import { createCss } from "@stitches/react";
+
+export const stitchesConfig = createCss({
+  theme: {
+    colors: {
+      gray900: "hsl(205,5%,7%)",
+      gray700: "hsl(205,5%,25%)",
+      gray500: "hsl(205,5%,35%)",
+      gray50: "hsl(205,5%,95%)",
+      blue500: "hsl(205,90%,45%)",
+
+      // Alias
+      primary: "$gray900",
+      secondary: "$gray700",
+      tertiary: "$gray500",
+      link: "$blue500",
+      background: "$gray50",
+      border: "$gray900",
+    },
+    // ...
+});
+
+export const darkTheme = stitchesConfig.theme({
+  colors: {
+    primary: "$gray100",
+    secondary: "$gray200",
+    tertiary: "$gray300",
+    link: "$blue500",
+    background: "$gray900",
+    border: "$gray100",
+  },
+})
+```
+
+Stitches relies on CSS custom properties (also known as **variables**) for the
+theme tokens so by creating new themes you're basically creating a new set of
+custom properties attached to a class name, how to apply that class name is up
+to you.
+
+The simplest solution would be adding a button somewhere in the page with an
+`onClick` event that would toggle `darkTheme.className` on and off whenever it's
+clicked. But we want to offer something better in terms of user experience so
+we'll use [next-themes] by [Paco Coursey][paco].
+
+To enable your dark theme you'll need to add the `ThemeProvider` from
+next-themes in your
+[`_app.js`](https://nextjs.org/docs/advanced-features/custom-app) file with a
+little bit of config:
+
+```tsx
+import { ThemeProvider } from "next-themes";
+
+function App({ Component, pageProps }) {
+  return (
+    <ThemeProvider
+      attribute="class"
+      value={{
+        dark: darkTheme.className,
+        light: "light",
+      }}
+    >
+      <Component {...pageProps} />
+    </ThemeProvider>
+  );
+}
+
+export default App;
+```
+
+- By default `ThemeProvider` adds the current theme name to a `data-theme`
+  attribute in the `html` tag, we are modifying that behaviour to use the
+  `class` attribute instead.
+- When passing a `value` all of the default themes (`light` and `dark`) are
+  overriden so we want to make sure we name the `light` theme even if we're not
+  using the class name at all.
+
+Finally, we want some mechanism to switch between themes. We'll use information
+that's only available in the client so to avoid an hydration mismatch in the
+server we'll need to delay rendering the component until it's mounted.
+
+```tsx
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+
+export const ThemeToggle = () => {
+  const [mounted, setMounted] = useState(false);
+  const { setTheme, resolvedTheme } = useTheme();
+
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return null;
+
+  const toggleTheme = () => {
+    const targetTheme = resolvedTheme === "light" ? "dark" : "light";
+
+    setTheme(targetTheme);
+  };
+
+  return (
+    <button className={toggleButton()} onClick={toggleTheme}>
+      Switch theme
+    </button>
+  );
+};
+```
+
+And done! You can try it here:
+
+<ThemeToggleDemo />
+
+[next]: https://nextjs.org/
+[stitches]: https://stitches.dev/
+[paco]: https://twitter.com/pacocoursey
+[next-themes]: https://github.com/pacocoursey/next-themes

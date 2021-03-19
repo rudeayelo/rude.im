@@ -3,7 +3,8 @@ import { css, styled } from "src/styles";
 import { Link } from "src/components/A";
 import { Text } from "src/components/Text";
 import { Divider } from "src/components/Divider";
-import { LeadingTrimDemo } from "src/components/LeadingTrimDemo";
+import { LeadingTrimDemo } from "src/components/blog/LeadingTrimDemo";
+import { ThemeToggleDemo } from "src/components/blog/ThemeToggleDemo";
 
 const Pre = styled("pre", {
   marginTop: 0,
@@ -111,4 +112,5 @@ export const MDXComponents = {
   ),
   inlineCode: (props) => <Code {...props} />,
   LeadingTrimDemo,
+  ThemeToggleDemo,
 };

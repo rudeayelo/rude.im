@@ -17,13 +17,14 @@ export const TwitterIcon = () => (
   </svg>
 );
 
-export const ThemeIcon = () => (
+export const ThemeIcon = (props) => (
   <svg
     height="24"
     width="24"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg"
     className={block()}
+    {...props}
   >
     <path
       d="M12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8V16Z"

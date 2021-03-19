@@ -93,7 +93,7 @@ export const MicrolinkCardBlog = () => (
             color: "hsl(205,5%,90%)",
           }}
         >
-          Taming vertical white space with leading-trim and stitches
+          Title
         </Text>
       </Flex>
     </Flex>
