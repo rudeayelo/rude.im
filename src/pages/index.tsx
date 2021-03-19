@@ -70,6 +70,8 @@ const Home = ({ posts }) => (
       <meta property="og:description" content={meta.description} />
       <meta property="og:title" content={meta.title} />
       <meta property="og:image" content={meta.image} />
+      <meta property="og:image:width" content="1686" />
+      <meta property="og:image:height" content="956" />
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content="@Rude" />
       <meta name="twitter:title" content={meta.title} />
