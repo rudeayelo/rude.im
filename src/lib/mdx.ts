@@ -44,7 +44,7 @@ export async function getFileBySlug(type, slug) {
 export async function getAllFilesFrontMatter(type) {
   const files = fs.readdirSync(path.join(root, "src", "data", type));
 
-  return files.reduce((allPosts, postSlug) => {
+  const posts = files.reduce((allPosts, postSlug) => {
     if (postSlug.substr(postSlug.lastIndexOf(".") + 1) !== "mdx")
       return [...allPosts];
 
@@ -62,4 +62,11 @@ export async function getAllFilesFrontMatter(type) {
       ...allPosts,
     ];
   }, []);
+
+  posts.sort((a, b) => {
+    // @ts-ignore
+    return new Date(b.publishedAt) - new Date(a.publishedAt);
+  });
+
+  return posts;
 }
