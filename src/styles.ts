@@ -148,14 +148,36 @@ export const {
       };
     },
   },
-  conditions: {
-    sm: "@media (min-width: 576px)",
-    md: "@media (min-width: 768px)",
-    lg: "@media (min-width: 992px)",
+  media: {
+    dark: "(prefers-color-scheme: dark)",
   },
 });
 
-global({
+export const darkTheme = theme("dark", {
+  colors: {
+    primary: "$gray100",
+    secondary: "$gray200",
+    tertiary: "$gray300",
+
+    darkPrimary: "$gray100",
+    darkSecondary: "$gray200",
+    darkTertiary: "$gray300",
+
+    link: "$blue500",
+    mutedLink: "$gray100",
+
+    brightBg: "$gray900",
+    lightBg: "$gray800",
+    darkBg: "$gray900",
+    noirBg: "$gray900",
+    codeBg: "#011627",
+
+    border: "$gray100",
+    codeBorder: "#0D2A45",
+  },
+});
+
+export const globalStyles = global({
   "@font-face": [
     {
       fontFamily: "Source Sans",
@@ -190,29 +212,24 @@ global({
     fontFamily: "$mono",
     marginTop: 0,
     marginBottom: "$8",
+    background: "$codeBg",
   },
-})();
+  "@dark": {
+    ":root:not(.light)": {
+      // @ts-ignore
+      ...Object.keys(darkTheme.colors).reduce((varSet, currentColorKey) => {
+        // @ts-ignore
+        const currentColor = darkTheme.colors[currentColorKey];
+        const currentColorValue =
+          currentColor.value.substring(0, 1) === "$"
+            ? `$colors${currentColor.value}`
+            : currentColor.value;
 
-export const darkTheme = theme({
-  colors: {
-    primary: "$gray100",
-    secondary: "$gray200",
-    tertiary: "$gray300",
-
-    darkPrimary: "$gray100",
-    darkSecondary: "$gray200",
-    darkTertiary: "$gray300",
-
-    link: "$blue500",
-    mutedLink: "$gray100",
-
-    brightBg: "$gray900",
-    lightBg: "$gray800",
-    darkBg: "$gray900",
-    noirBg: "$gray900",
-    codeBg: "#011627",
-
-    border: "$gray100",
-    codeBorder: "#0D2A45",
+        return {
+          [currentColor.variable]: currentColorValue,
+          ...varSet,
+        };
+      }, {}),
+    },
   },
 });

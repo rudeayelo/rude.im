@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@radix-ui/react-visually-hidden": "0.0.5",
-    "@stitches/react": "0.1.0-canary.18",
+    "@stitches/react": "0.1.0",
     "gray-matter": "4.0.2",
     "leading-trim": "1.0.1",
     "mdx-prism": "0.3.1",
