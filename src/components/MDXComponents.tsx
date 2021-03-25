@@ -81,21 +81,36 @@ export const MDXComponents = {
     <Text
       {...props}
       as="h1"
-      css={{ textSize: "$8", fontWeight: "$black", marginBottom: "$8" }}
+      css={{
+        textSize: "$8",
+        fontWeight: "$black",
+        marginBottom: "$8",
+        letterSpacing: "$title",
+      }}
     />
   ),
   h2: (props) => (
     <Text
       {...props}
       as="h2"
-      css={{ textSize: "$7", fontWeight: "$black", marginBottom: "$8" }}
+      css={{
+        textSize: "$7",
+        fontWeight: "$black",
+        marginBottom: "$8",
+        letterSpacing: "$title",
+      }}
     />
   ),
   h3: (props) => (
     <Text
       {...props}
       as="h3"
-      css={{ textSize: "$6", fontWeight: "$black", marginBottom: "$8" }}
+      css={{
+        textSize: "$6",
+        fontWeight: "$black",
+        marginBottom: "$8",
+        letterSpacing: "$title",
+      }}
     />
   ),
   p: (props) => (

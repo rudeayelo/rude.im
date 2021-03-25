@@ -14,6 +14,7 @@ software ever: [Next.js][next] and [Stitches][stitches]:
 First of all, you'll need to setup Stitches and your dark theme:
 
 ```tsx
+// stitches.config.ts
 import { createCss } from "@stitches/react";
 
 export const stitchesConfig = createCss({
@@ -34,6 +35,10 @@ export const stitchesConfig = createCss({
       border: "$gray900",
     },
     // ...
+  },
+  media: {
+    dark: "(prefers-color-scheme: dark)",
+  },
 });
 
 export const darkTheme = stitchesConfig.theme({
@@ -45,7 +50,7 @@ export const darkTheme = stitchesConfig.theme({
     background: "$gray900",
     border: "$gray100",
   },
-})
+});
 ```
 
 Stitches relies on CSS custom properties (also known as **variables**) for the
@@ -64,12 +69,15 @@ next-themes in your
 little bit of config:
 
 ```tsx
+// _app.tsx
 import { ThemeProvider } from "next-themes";
+import { darkTheme } from "./stitches.config.ts";
 
 function App({ Component, pageProps }) {
   return (
     <ThemeProvider
       attribute="class"
+      defaultTheme="system"
       value={{
         dark: darkTheme.className,
         light: "light",
@@ -95,6 +103,7 @@ that's only available in the client so to avoid an hydration mismatch in the
 server we'll need to delay rendering the component until it's mounted.
 
 ```tsx
+// ./ThemeToggle.tsx
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 
@@ -123,6 +132,41 @@ export const ThemeToggle = () => {
 And done! You can try it here:
 
 <ThemeToggleDemo />
+
+## Update: Handling the FODT (Flash Of Default Theme)
+
+We might (should) be generating our static pages at build time, using the above
+technique alone will cause a flash of light theme for users with dark theme
+enabled at the system level.
+
+To fix that issue we'll need some global styles to manually override the theme
+tokens when the user prefers a dark color scheme:
+
+```ts
+// stitches.config.tsx
+export const globalStyles = stitchesConfig.global({
+  "@dark": { // notice the `media` definition on the stitches.config.ts file
+    ":root:not(.light)": {
+      ...Object.keys(darkTheme.colors).reduce((varSet, currentColorKey) => {
+        const currentColor = darkTheme.colors[currentColorKey];
+        const currentColorValue =
+          currentColor.value.substring(0, 1) === "$"
+            ? `$colors${currentColor.value}`
+            : currentColor.value;
+
+        return {
+          [currentColor.variable]: currentColorValue,
+          ...varSet,
+        };
+      }, {}),
+    },
+  },
+});
+
+globalStyles();
+```
+
+
 
 [next]: https://nextjs.org/
 [stitches]: https://stitches.dev/

@@ -5,6 +5,7 @@ import { ThemeIcon } from "src/components/icons";
 
 const toggleButton = css({
   borderRadius: "22px",
+  marginBottom: "$8",
   position: "relative",
   display: "inline-flex",
   alignItems: "center",
