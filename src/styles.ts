@@ -208,6 +208,16 @@ export const globalStyles = globalCss({
     color: "$primary",
   },
   li: { listStyle: "none" },
+  "::-moz-selection": {
+    background: "$blue500",
+    color: "white",
+    textShadow: ".05em .05em 0 #0005",
+  },
+  "::selection": {
+    background: "$blue500",
+    color: "white",
+    textShadow: ".05em .05em 0 #0005",
+  },
   "@dark": {
     ":root:not(.light)": {
       // @ts-ignore
