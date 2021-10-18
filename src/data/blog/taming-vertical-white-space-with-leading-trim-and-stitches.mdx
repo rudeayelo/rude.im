@@ -7,6 +7,9 @@ publishedAt: "2021-03-03"
 image: https://i.microlink.io/https%3A%2F%2Fcards.microlink.io%2F%3Fpreset%3Dsimple%26p%3D2gSIPD4KICAgIDxMaW5rCiAgICAgIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzMj9mYW1pbHk9U291cmNlK1NhbnMrUHJvOndnaHRAMzAwOzYwMDs5MDAmZGlzcGxheT1ibG9jayIKICAgICAgcmVsPSJzdHlsZXNoZWV0IgogICAgLz4KICAgIDxGbGV4CiAgICAgIHN4PXt7CiAgICAgICAgYWxpZ25JdGVtczogImZsZXgtc3RhcnQiLAogICAgICAgIGp1c3RpZnlDb250ZW50OiAiZmxleC1zdGFydCIsCiAgICAgICAgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgYmc6ICJoc2woMjA1LDUlLDclKSIsCiAgICAgICAgcGFkZGluZzogIjQwcHgiLAogICAgICB9fQogICAgPgogICAgICA8aW1nIHNyYz0iaHR0cHM6Ly9ydWRlLmltL2Zhdmljb24tZGFyay5zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiAvPgogICAgICA8RmxleAogICAgICAgIHN4PXt7CiAgICAgICAgICBtYXJnaW5Ub3A6IDQsCiAgICAgICAgICBhbGlnbkl0ZW1zOiAiZmxleC1zdGFydCIsCiAgICAgICAgICBqdXN0aWZ5Q29udGVudDogImZsZXgtc3RhcnQiLAogICAgICAgICAgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgfX0KICAgICAgPgogICAgICAgIDxUZXh0CiAgICAgICAgICBzeD17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiU291cmNlIFNhbnMgUHJvIiwKICAgICAgICAgICAgZm9udFNpemU6IDUsCiAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDYwMCwKICAgICAgICAgICAgY29sb3I6ICJoc2woMjA1LDUlLDY1JSkiLAogICAgICAgICAgfX0KICAgICAgICA-CiAgICAgICAgICBSdWRlIEF5ZWxvCiAgICAgICAgPC9UZXh0PgogICAgICAgIDxUZXh0CiAgICAgICAgICBzeD17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiU291cmNlIFNhbnMgUHJvIiwKICAgICAgICAgICAgZm9udFNpemU6ICI2NnB4IiwKICAgICAgICAgICAgZm9udFdlaWdodDogNzAwLAogICAgICAgICAgICBsaW5lSGVpZ2h0OiAxLAogICAgICAgICAgICBjb2xvcjogImhzbCgyMDUsNSUsOTAlKSIsCiAgICAgICAgICB9fQogICAgICAgID4KICAgICAgICAgIFRhbWluZyB2ZXJ0aWNhbCB3aGl0ZSBzcGFjZSB3aXRoIGxlYWRpbmctdHJpbSBhbmQgU3RpdGNoZXMKICAgICAgICA8L1RleHQ-CiAgICAgIDwvRmxleD4KICAgIDwvRmxleD4KICA8Lz4%23
 ---
 
+> **October 2021 update:** Updated the code examples to match the [Stitches v1
+> API][stitches-v1-api].
+
 I've been designing and developing websites for a while now and one of the
 trickiest issues I always come accross is **handling vertical white space
 between text nodes**. When working on a layout in a visual design app, my
@@ -33,33 +36,37 @@ thought I could make a little wrapper around **leading-trim** using its `utils`
 feature
 
 ```ts
-import { createCss } from "@stitches/react";
+import { createStitches } from "@stitches/react";
 import { leadingTrim } from "leading-trim";
 
-const { styled } = createCss({
+const fontSizes = {
+  1: "16px",
+  2: "20px",
+}
+
+const lineHeights = {
+  1: "1.5",
+  2: "1.4",
+}
+
+const { styled } = createStitches({
   theme: {
     fonts: {
       sans:
         "Source Sans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
     },
-    fontSizes: {
-      1: "16px",
-      2: "20px",
-    },
-    lineHeights: {
-      1: "1.5",
-      2: "1.4",
-    },
+    fontSizes,
+    lineHeights,
   }
   utils: {
-    textSize: ({ theme }) => (value: `$${keyof typeof theme.fontSizes}`) => {
+    textSize: (value: `$${keyof typeof fontSizes}`) => {
       const size = value.substr(1);
 
       return {
         textSize: value,
         margin: 0,
         ...leadingTrim({
-          lineHeight: Number(theme.lineHeights[size]),
+          lineHeight: Number(lineHeights[size]),
           reference: {
             textSize: 40,
             lineHeight: 1,
@@ -115,3 +122,4 @@ some more information and links about the topic.
 [leading-trim]: https://github.com/rudeayelo/leading-trim
 [stitches]: https://stitches.dev/
 [style-src]: https://github.com/rudeayelo/rude.im/blob/main/src/styles.ts
+[stitches-v1-api]: https://stitches.dev/blog/migrating-from-beta-to-v1

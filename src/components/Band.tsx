@@ -1,6 +1,6 @@
-import { styled } from "src/styles";
+import { css, styled } from "src/styles";
 
-export const Band = styled("section", {
+export const band = css({
   padding: "$10",
 
   variants: {
@@ -23,3 +23,5 @@ export const Band = styled("section", {
     variant: "light",
   },
 });
+
+export const Band = styled("section", band);

@@ -6,26 +6,9 @@ import NextDocument, {
   DocumentContext,
 } from "next/document";
 import React from "react";
-import { getCssString } from "src/styles";
+import { getCssText } from "src/styles";
 
 export default class Document extends NextDocument {
-  static async getInitialProps(ctx: DocumentContext) {
-    try {
-      const initialProps = await NextDocument.getInitialProps(ctx);
-
-      return {
-        ...initialProps,
-        styles: (
-          <>
-            {initialProps.styles}
-            <style>{getCssString()}</style>
-          </>
-        ),
-      };
-    } finally {
-    }
-  }
-
   render() {
     return (
       <Html lang="en">
@@ -43,6 +26,10 @@ export default class Document extends NextDocument {
             as="font"
             type="font/woff2"
             crossOrigin="anonymous"
+          />
+          <style
+            id="stitches"
+            dangerouslySetInnerHTML={{ __html: getCssText() }}
           />
           <script async data-api="/_hive" src="/bee.js"></script>
         </Head>

@@ -81,8 +81,8 @@ const Home = ({ posts }) => (
     <SiteHeader />
     <main>
       <Band variant="noir">
-        <Stack gap={10} className={layout()}>
-          <Stack gap={6}>
+        <Stack gap="10" className={layout()}>
+          <Stack gap="6">
             <Text
               css={{
                 textSize: "clamp($5, 4vw, $6)",
@@ -124,7 +124,7 @@ const Home = ({ posts }) => (
           <SectionHeading>I wrote about</SectionHeading>
           <ul className={articleGrid()}>
             {posts.map((post) => (
-              <Stack gap={3} as="li" key={post.slug}>
+              <Stack gap="4" as="li" key={post.slug}>
                 <Text
                   as="div"
                   css={{

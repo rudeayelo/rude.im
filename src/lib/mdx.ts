@@ -2,8 +2,9 @@ import fs from "fs";
 import matter from "gray-matter";
 import mdxPrism from "mdx-prism";
 import path from "path";
-import renderToString from "next-mdx-remote/render-to-string";
-import { MDXComponents } from "src/components/MDXComponents";
+import { serialize } from "next-mdx-remote/serialize";
+import remarkAutolinkHeadings from "remark-autolink-headings";
+import remarkSlug from "remark-slug";
 
 const root = process.cwd();
 
@@ -20,19 +21,15 @@ export async function getFileBySlug(type, slug) {
     : fs.readFileSync(path.join(root, "src", "data", `${type}.mdx`), "utf8");
 
   const { data, content } = matter(source);
-  const mdxSource = await renderToString(content, {
-    components: MDXComponents,
+  const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [
-        require("remark-autolink-headings"),
-        require("remark-slug"),
-      ],
+      remarkPlugins: [remarkAutolinkHeadings, remarkSlug],
       rehypePlugins: [mdxPrism],
     },
   });
 
   return {
-    mdxSource,
+    source: mdxSource,
     frontMatter: {
       wordCount: content.split(/\S+/g).length,
       slug: slug || null,

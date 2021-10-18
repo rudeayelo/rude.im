@@ -7,14 +7,22 @@ import { LeadingTrimDemo } from "src/components/blog/LeadingTrimDemo";
 import { ThemeToggleDemo } from "src/components/blog/ThemeToggleDemo";
 
 const Pre = styled("pre", {
-  marginTop: 0,
-  marginBottom: "$8",
-  padding: "$4",
-  overflow: "auto",
-  background: "$codeBg",
   border: "1px solid $codeBorder",
   borderRadius: "4px",
   fontSize: "$3",
+  // Hack to gain a bit more of specificity
+  "&[class]": {
+    fontFamily: "$mono",
+    marginBottom: "$8",
+    marginTop: 0,
+    padding: "$4",
+    overflow: "auto",
+    background: "$codeBg",
+  },
+  "& code[class]": {
+    fontFamily: "$mono",
+    lineHeight: 1.7,
+  },
 });
 
 const Code = styled("code", {
@@ -75,6 +83,19 @@ const List = (props) => (
   </Ul>
 );
 
+const Blockquote = styled("blockquote", {
+  borderLeft: "2px solid $border",
+  marginTop: 0,
+  marginLeft: 0,
+  marginRight: 0,
+  marginBottom: "$8",
+  padding: "$2 $4",
+  color: "$tertiary",
+  "& > *:last-child": {
+    marginBottom: 0,
+  },
+});
+
 export const MDXComponents = {
   a: Link,
   h1: (props) => (
@@ -126,6 +147,7 @@ export const MDXComponents = {
     <Divider css={{ marginTop: "$10", marginBottom: "$10" }} {...props} />
   ),
   inlineCode: (props) => <Code {...props} />,
+  blockquote: Blockquote,
   LeadingTrimDemo,
   ThemeToggleDemo,
 };

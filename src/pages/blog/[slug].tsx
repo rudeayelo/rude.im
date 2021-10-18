@@ -1,5 +1,5 @@
 import Head from "next/head";
-import hydrate from "next-mdx-remote/hydrate";
+import { MDXRemote } from "next-mdx-remote";
 import { css } from "src/styles";
 import { getFiles, getFileBySlug } from "src/lib/mdx";
 import { formatShortDate } from "src/lib/dates";
@@ -17,11 +17,7 @@ const layout = css({
   maxWidth: "700px",
 });
 
-const Blog = ({ mdxSource, frontMatter }) => {
-  const content = hydrate(mdxSource, {
-    components: MDXComponents,
-  });
-
+const Blog = ({ source, frontMatter }) => {
   const router = useRouter();
 
   const meta = {
@@ -54,8 +50,8 @@ const Blog = ({ mdxSource, frontMatter }) => {
       <PrismTheme />
       <SiteHeader />
       <Band as="main" variant="bright">
-        <Stack as="article" gap={8} className={layout()}>
-          <Stack gap={4}>
+        <Stack as="article" gap="8" className={layout()}>
+          <Stack gap="4">
             <Text
               as="h1"
               css={{
@@ -83,7 +79,7 @@ const Blog = ({ mdxSource, frontMatter }) => {
               </Text>
             </Inline>
           </Stack>
-          <>{content}</>
+          <MDXRemote {...source} components={MDXComponents} />
         </Stack>
       </Band>
       <SiteFooter />

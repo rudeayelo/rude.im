@@ -1,14 +1,28 @@
-import { createCss } from "@stitches/react";
+import { createStitches } from "@stitches/react";
 import { leadingTrim } from "leading-trim";
+
+const lineHeights = {
+  1: "1.5",
+  2: "1.6",
+  3: "1.6",
+  4: "1.5",
+  5: "1.5",
+  6: "1.3",
+  7: "1.3",
+  8: "1.1",
+  9: ".9",
+  10: "1",
+};
 
 export const {
   css,
   styled,
-  global,
+  globalCss,
   theme,
+  createTheme,
   keyframes,
-  getCssString,
-} = createCss({
+  getCssText,
+} = createStitches({
   theme: {
     colors: {
       gray900: "hsl(205,5%,7%)",
@@ -69,8 +83,7 @@ export const {
       lindenHill: "Linden Hill, MS Serif, New York, serif",
       sans: "$sourceSans",
       serif: "$lindenHill",
-      mono:
-        "SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
+      mono: "SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace",
     },
     fontWeights: {
       regular: "400",
@@ -89,18 +102,7 @@ export const {
       9: "52px",
       10: "64px",
     },
-    lineHeights: {
-      1: "1.5",
-      2: "1.6",
-      3: "1.5",
-      4: "1.4",
-      5: "1.4",
-      6: "1.1",
-      7: "1.1",
-      8: "1.1",
-      9: ".9",
-      10: "1",
-    },
+    lineHeights,
     letterSpacings: {
       title: "-1px",
     },
@@ -113,7 +115,7 @@ export const {
     transitions: {},
   },
   utils: {
-    textSize: ({ theme }) => (value: string) => {
+    textSize: (value: string) => {
       const values = value.match(/[^\/]+/g).map((v) => v.trim());
 
       const fontSize = values[0];
@@ -123,17 +125,15 @@ export const {
 
       const clampedFontSizes = fontSize.match(/\$(\d+)/g);
       const lineHeightLiteral = lineHeight && lineHeight.match(/(\d+)/g)[0];
-      const lineHeightScale = clampedFontSizes[
-        clampedFontSizes.length - 1
-      ].substring(1);
+      const lineHeightScale =
+        clampedFontSizes[clampedFontSizes.length - 1].substring(1);
 
       return {
         fontSize,
         margin: 0,
         ...leadingTrim({
           lineHeight:
-            Number(lineHeightLiteral) ||
-            Number(theme.lineHeights[lineHeightScale]),
+            Number(lineHeightLiteral) || Number(lineHeights[lineHeightScale]),
           reference: {
             fontSize: 40,
             lineHeight: 1,
@@ -153,7 +153,7 @@ export const {
   },
 });
 
-export const darkTheme = theme("dark", {
+export const darkTheme = createTheme("dark", {
   colors: {
     primary: "$gray100",
     secondary: "$gray200",
@@ -177,7 +177,7 @@ export const darkTheme = theme("dark", {
   },
 });
 
-export const globalStyles = global({
+export const globalStyles = globalCss({
   "@font-face": [
     {
       fontFamily: "Source Sans",
@@ -208,11 +208,6 @@ export const globalStyles = global({
     color: "$primary",
   },
   li: { listStyle: "none" },
-  "code[class*=language-], pre[class*=language-]": {
-    fontFamily: "$mono",
-    marginTop: 0,
-    marginBottom: "$8",
-  },
   "@dark": {
     ":root:not(.light)": {
       // @ts-ignore

@@ -7,6 +7,9 @@ publishedAt: "2021-03-19"
 image: https://i.microlink.io/https%3A%2F%2Fcards.microlink.io%2F%3Fpreset%3Dsimple%26p%3D2gRyPD4KICAgIDxMaW5rCiAgICAgIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20vY3NzMj9mYW1pbHk9U291cmNlK1NhbnMrUHJvOndnaHRAMzAwOzYwMDs5MDAmZGlzcGxheT1ibG9jayIKICAgICAgcmVsPSJzdHlsZXNoZWV0IgogICAgLz4KICAgIDxGbGV4CiAgICAgIHN4PXt7CiAgICAgICAgYWxpZ25JdGVtczogImZsZXgtc3RhcnQiLAogICAgICAgIGp1c3RpZnlDb250ZW50OiAiZmxleC1zdGFydCIsCiAgICAgICAgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgYmc6ICJoc2woMjA1LDUlLDclKSIsCiAgICAgICAgcGFkZGluZzogIjQwcHgiLAogICAgICB9fQogICAgPgogICAgICA8aW1nIHNyYz0iaHR0cHM6Ly9ydWRlLmltL2Zhdmljb24tZGFyay5zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiAvPgogICAgICA8RmxleAogICAgICAgIHN4PXt7CiAgICAgICAgICBtYXJnaW5Ub3A6IDQsCiAgICAgICAgICBhbGlnbkl0ZW1zOiAiZmxleC1zdGFydCIsCiAgICAgICAgICBqdXN0aWZ5Q29udGVudDogImZsZXgtc3RhcnQiLAogICAgICAgICAgZmxleERpcmVjdGlvbjogImNvbHVtbiIsCiAgICAgICAgfX0KICAgICAgPgogICAgICAgIDxUZXh0CiAgICAgICAgICBzeD17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiU291cmNlIFNhbnMgUHJvIiwKICAgICAgICAgICAgZm9udFNpemU6IDUsCiAgICAgICAgICAgIGZvbnRXZWlnaHQ6IDYwMCwKICAgICAgICAgICAgY29sb3I6ICJoc2woMjA1LDUlLDY1JSkiLAogICAgICAgICAgfX0KICAgICAgICA-CiAgICAgICAgICBSdWRlIEF5ZWxvCiAgICAgICAgPC9UZXh0PgogICAgICAgIDxUZXh0CiAgICAgICAgICBzeD17ewogICAgICAgICAgICBmb250RmFtaWx5OiAiU291cmNlIFNhbnMgUHJvIiwKICAgICAgICAgICAgZm9udFNpemU6ICI2NnB4IiwKICAgICAgICAgICAgZm9udFdlaWdodDogNzAwLAogICAgICAgICAgICBsaW5lSGVpZ2h0OiAxLAogICAgICAgICAgICBjb2xvcjogImhzbCgyMDUsNSUsOTAlKSIsCiAgICAgICAgICB9fQogICAgICAgID4KICAgICAgICAgIERhcmsgdGhlbWUgd2l0aCBTdGl0Y2hlcyBhbmQgTmV4dC5qcwogICAgICAgIDwvVGV4dD4KICAgICAgPC9GbGV4PgogICAgPC9GbGV4PgogIDwvPg%23
 ---
 
+> **October 2021 update:** Updated the code examples to match the [Stitches v1
+> API][stitches-v1-api].
+
 It seems like you can't make a website nowadays without pushing in **dark
 mode**. Let's see how it's done using two of my most favourite pieces of
 software ever: [Next.js][next] and [Stitches][stitches]:
@@ -41,7 +44,7 @@ export const stitchesConfig = createCss({
   },
 });
 
-export const darkTheme = stitchesConfig.theme({
+export const darkTheme = stitchesConfig.createTheme({
   colors: {
     primary: "$gray100",
     secondary: "$gray200",
@@ -133,7 +136,7 @@ And done! You can try it here:
 
 <ThemeToggleDemo />
 
-## Update: Handling the FODT (Flash Of Default Theme)
+## Handling the FODT (Flash Of Default Theme)
 
 We might (should) be generating our static pages at build time, using the above
 technique alone will cause a flash of light theme for users with dark theme
@@ -144,8 +147,9 @@ tokens when the user prefers a dark color scheme:
 
 ```ts
 // stitches.config.tsx
-export const globalStyles = stitchesConfig.global({
-  "@dark": { // notice the `media` definition on the stitches.config.ts file
+export const globalStyles = stitchesConfig.globalCss({
+  "@dark": {
+    // notice the `media` definition on the stitches.config.ts file
     ":root:not(.light)": {
       ...Object.keys(darkTheme.colors).reduce((varSet, currentColorKey) => {
         const currentColor = darkTheme.colors[currentColorKey];
@@ -166,9 +170,8 @@ export const globalStyles = stitchesConfig.global({
 globalStyles();
 ```
 
-
-
 [next]: https://nextjs.org/
 [stitches]: https://stitches.dev/
 [paco]: https://twitter.com/pacocoursey
 [next-themes]: https://github.com/pacocoursey/next-themes
+[stitches-v1-api]: https://stitches.dev/blog/migrating-from-beta-to-v1

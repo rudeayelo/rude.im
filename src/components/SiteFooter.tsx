@@ -50,11 +50,11 @@ export const SiteFooter = () => {
 
   return (
     <Band as="footer">
-      <Stack gap={10} divider>
+      <Stack gap="10" divider>
         {pathname === "/" && (
           <Stack as="section">
             <SectionHeading>I was once told</SectionHeading>
-            <Stack gap={4}>
+            <Stack gap="4">
               <Quote>“You're not rude at all”</Quote>
               <Text css={{ color: "$tertiary", textSize: "$4" }}>
                 — <span className={quoteAuthor()}>Student</span>, Ironhack, 2015
