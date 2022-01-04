@@ -26,7 +26,7 @@ function generateSiteMap(posts) {
 
 export default function SiteMap() {}
 
-export async function getServerSideProps({ res }) {
+export async function getStaticProps({ res }) {
   const posts = await getFiles("blog");
 
   const sitemap = generateSiteMap(posts);
