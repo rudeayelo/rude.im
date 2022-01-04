@@ -100,11 +100,11 @@ const Home = ({ posts }) => (
             >
               I do UI design and development and I’m currently leading a team at{" "}
               <A
-                href="https://www.new-work.se/en/"
+                href="https://www.gartner.com/en/digital-markets"
                 variant="discrete"
-                data-splitbee-event="Clicked on New Work link"
+                data-splitbee-event="Clicked on Gartner link"
               >
-                New Work (aka XING)
+                Gartner
               </A>
               . I’m into design systems and enjoy building side projects to
               scratch my own itches.
