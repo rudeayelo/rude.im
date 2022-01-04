@@ -10,7 +10,7 @@ const Quote = styled(Text, {
   fontFamily: "$serif",
   fontStyle: "italic",
   color: "$primary",
-  textSize: "clamp($7, 8vw, $8) / $8 / 3 / -4",
+  textSize: "clamp($7, 8vw, $8) / $8 / 4 / -6",
 });
 
 const SocialLinkList = styled("ul", {

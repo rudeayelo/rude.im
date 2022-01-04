@@ -10,7 +10,7 @@ const lineHeights = {
   6: "1.3",
   7: "1.3",
   8: "1.1",
-  9: ".9",
+  9: "1",
   10: "1",
 };
 
@@ -137,8 +137,8 @@ export const {
           reference: {
             fontSize: 40,
             lineHeight: 1,
-            topCrop: 4,
-            bottomCrop: 8,
+            topCrop: 6,
+            bottomCrop: 5,
           },
           correction: {
             top: Number(correctionTop),
@@ -177,16 +177,34 @@ export const darkTheme = createTheme("dark", {
   },
 });
 
+const sansUnicodeRange =
+  "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD";
+
 export const globalStyles = globalCss({
   "@font-face": [
     {
       fontFamily: "Source Sans",
       fontStyle: "normal",
-      fontWeight: "200 900",
+      fontWeight: "600",
       fontDisplay: "swap",
-      src: 'url("/fonts/sourcesans-variable.woff2") format("woff2")',
-      unicodeRange:
-        "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+      src: 'url("/fonts/sourcesans-600.woff2") format("woff2")',
+      unicodeRange: sansUnicodeRange,
+    },
+    {
+      fontFamily: "Source Sans",
+      fontStyle: "normal",
+      fontWeight: "900",
+      fontDisplay: "swap",
+      src: 'url("/fonts/sourcesans-900.woff2") format("woff2")',
+      unicodeRange: sansUnicodeRange,
+    },
+    {
+      fontFamily: "Source Sans",
+      fontStyle: "normal",
+      fontWeight: "400",
+      fontDisplay: "swap",
+      src: 'url("/fonts/sourcesans-400.woff2") format("woff2")',
+      unicodeRange: sansUnicodeRange,
     },
     {
       fontFamily: "Linden Hill",

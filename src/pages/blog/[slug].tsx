@@ -51,7 +51,7 @@ const Blog = ({ source, frontMatter }) => {
       <SiteHeader />
       <Band as="main" variant="bright">
         <Stack as="article" gap="8" className={layout()}>
-          <Stack gap="4">
+          <Stack gap="6">
             <Text
               as="h1"
               css={{
