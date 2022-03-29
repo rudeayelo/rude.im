@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-visually-hidden": "0.1.4",
-    "@stitches/react": "1.2.6",
+    "@stitches/react": "1.2.7",
     "gray-matter": "4.0.3",
     "leading-trim": "1.0.1",
     "mdx-prism": "0.3.4",
