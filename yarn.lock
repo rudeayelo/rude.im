@@ -248,9 +248,9 @@
     csstype "^3.0.2"
 
 "@types/react@>=16":
-  version "18.0.17"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.17.tgz#4583d9c322d67efe4b39a935d223edcc7050ccf4"
-  integrity sha512-38ETy4tL+rn4uQQi7mB81G7V1g0u2ryquNmsVIOKUAEIDK+3CUjZ6rSRpdvS99dNBnkLFL83qfmtLacGOTIhwQ==
+  version "18.0.18"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.18.tgz#9f16f33d57bc5d9dca848d12c3572110ff9429ac"
+  integrity sha512-6hI08umYs6NaiHFEEGioXnxJ+oEhY3eRz8VCUaudZmGdtvPviCJB8mgaMxaDWAdPSYd4eFavrPk2QIolwbLYrg==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -317,9 +317,9 @@ buffer@6.0.3:
     ieee754 "^1.2.1"
 
 caniuse-lite@^1.0.30001332:
-  version "1.0.30001380"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001380.tgz#6f2427ad8ebee1b400a38ca3560515756ba352bb"
-  integrity sha512-OO+pPubxx16lkI7TVrbFpde8XHz66SMwstl1YWpg6uMGw56XnhYVwtPIjvX4kYpzwMwQKr4DDce394E03dQPGg==
+  version "1.0.30001390"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001390.tgz#158a43011e7068ef7fc73590e9fd91a7cece5e7f"
+  integrity sha512-sS4CaUM+/+vqQUlCvCJ2WtDlV81aWtHhqeEVkLokVJJa3ViN4zDxAGfq9R8i1m90uGHxo99cy10Od+lvn3hf0g==
 
 ccount@^1.0.0:
   version "1.1.0"
@@ -867,9 +867,9 @@ mdast-util-mdxjs-esm@^1.0.0:
     mdast-util-to-markdown "^1.0.0"
 
 mdast-util-to-hast@^12.1.0:
-  version "12.2.0"
-  resolved "https://registry.yarnpkg.com/mdast-util-to-hast/-/mdast-util-to-hast-12.2.0.tgz#4dbff7ab2b20b8d12fc8fe98bf804d97e7358cbf"
-  integrity sha512-YDwT5KhGzLgPpSnQhAlK1+WpCW4gsPmNNAxUNMkMTDhxQyPp2eX86WOelnKnLKEvSpfxqJbPbInHFkefXZBhEA==
+  version "12.2.1"
+  resolved "https://registry.yarnpkg.com/mdast-util-to-hast/-/mdast-util-to-hast-12.2.1.tgz#5bba5e8234abcf66ae474cace5d0372c0dc4bfd7"
+  integrity sha512-dyindR2P7qOqXO1hQirZeGtVbiX7xlNQbw7gGaAwN4A1dh4+X8xU/JyYmRoyB8Fu1uPXzp7mlL5QwW7k+knvgA==
   dependencies:
     "@types/hast" "^2.0.0"
     "@types/mdast" "^3.0.0"
