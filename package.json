@@ -27,7 +27,7 @@
   "devDependencies": {
     "@types/node": "17.0.7",
     "@types/react": "17.0.49",
-    "next-sitemap": "3.1.21",
+    "next-sitemap": "3.1.22",
     "prettier": "2.7.1",
     "typescript": "4.8.3"
   },
