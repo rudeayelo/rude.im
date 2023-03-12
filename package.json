@@ -9,7 +9,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@radix-ui/react-visually-hidden": "1.0.1",
+    "@radix-ui/react-visually-hidden": "1.0.2",
     "@stitches/react": "1.2.8",
     "buffer": "6.0.3",
     "gray-matter": "4.0.3",
