@@ -25,7 +25,7 @@
     "remark-slug": "7.0.1"
   },
   "devDependencies": {
-    "@types/node": "18.15.10",
+    "@types/node": "18.15.11",
     "@types/react": "17.0.54",
     "next-sitemap": "3.1.55",
     "prettier": "2.8.7",
