@@ -5,7 +5,7 @@ import { Flex } from "src/components/Flex";
 import { Box } from "src/components/Box";
 
 type Align = "start" | "center" | "end";
-type Gap = Extract<keyof typeof theme["space"], string | number>;
+type Gap = Extract<keyof (typeof theme)["space"], string | number>;
 
 const alignMap = {
   start: "flex-start",
@@ -56,7 +56,7 @@ export const Inline = ({
     >
       {React.Children.map(
         children,
-        (child: React.Component<any, any, any>, i) =>
+        (child: React.ReactNode, i) =>
           child && (
             <Box
               as={determineChild(as)}

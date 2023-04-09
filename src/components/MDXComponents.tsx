@@ -57,7 +57,7 @@ const List = (props) => (
   <Ul as={props.as}>
     {React.Children.map(
       props.children,
-      (child: React.Component<any, any, any>, i) =>
+      (child: React.ReactNode, i) =>
         child && (
           <Li key={i}>
             {props.as === "ol" ? (

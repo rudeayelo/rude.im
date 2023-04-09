@@ -4,7 +4,7 @@ import { Divider } from "src/components/Divider";
 import { determineChild } from "src/lib/layout";
 
 type Align = "start" | "center" | "end";
-type Gap = Extract<keyof typeof theme["space"], string | number>;
+type Gap = Extract<keyof (typeof theme)["space"], string | number>;
 
 const alignMap = {
   start: "flex-start",
@@ -43,16 +43,18 @@ export const Stack = ({
   >
     {React.Children.map(
       children,
-      (child: React.Component<any, any, any>, i) =>
+      (child: React.ReactNode, i) =>
         child && (
           <>
-            {i > 0 && React.Children.toArray(children).length > 1 && divider && (
-              <Divider
-                css={{
-                  marginTop: i > 0 ? `$${gap}` : undefined,
-                }}
-              />
-            )}
+            {i > 0 &&
+              React.Children.toArray(children).length > 1 &&
+              divider && (
+                <Divider
+                  css={{
+                    marginTop: i > 0 ? `$${gap}` : undefined,
+                  }}
+                />
+              )}
             <StackChild
               as={determineChild(as)}
               key={i}

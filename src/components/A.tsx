@@ -32,7 +32,7 @@ export const Link = (props) => {
 
   if (isInternalLink) {
     return (
-      <NextLink href={href}>
+      <NextLink legacyBehavior href={href}>
         <A {...props} />
       </NextLink>
     );

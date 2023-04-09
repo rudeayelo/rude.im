@@ -15,7 +15,21 @@ export default class Document extends NextDocument {
         <Head>
           <link
             rel="preload"
-            href="/fonts/sourcesans-variable.woff2"
+            href="/fonts/sourcesans-400.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="preload"
+            href="/fonts/sourcesans-600.woff2"
+            as="font"
+            type="font/woff2"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="preload"
+            href="/fonts/sourcesans-900.woff2"
             as="font"
             type="font/woff2"
             crossOrigin="anonymous"
