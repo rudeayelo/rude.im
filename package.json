@@ -29,7 +29,7 @@
     "@types/react": "18.2.79",
     "next-sitemap": "4.1.8",
     "prettier": "2.8.8",
-    "typescript": "5.1.6"
+    "typescript": "5.9.3"
   },
   "prettier": {
     "proseWrap": "always"
