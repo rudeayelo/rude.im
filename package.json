@@ -18,15 +18,15 @@
     "next": "13.4.19",
     "next-mdx-remote": "4.4.1",
     "next-themes": "0.2.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
     "rehype": "12.0.1",
     "remark-autolink-headings": "7.0.1",
     "remark-slug": "7.0.1"
   },
   "devDependencies": {
     "@types/node": "18.16.20",
-    "@types/react": "18.2.79",
+    "@types/react": "18.3.27",
     "next-sitemap": "4.1.8",
     "prettier": "2.8.8",
     "typescript": "5.1.6"
