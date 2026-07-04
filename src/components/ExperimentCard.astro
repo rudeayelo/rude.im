@@ -1,0 +1,35 @@
+---
+import type { Experiment } from "../data/experiments";
+
+type Props = {
+  experiment: Experiment;
+};
+
+const { experiment } = Astro.props;
+const isArchived = experiment.status === "archived";
+---
+
+<a
+  class:list={["tile", "experiment-card", `tile-${experiment.size}`, { archived: isArchived }]}
+  href={experiment.href}
+  aria-label={`${experiment.title}: ${experiment.description}`}
+  data-status={experiment.status}
+>
+  <figure>
+    {
+      experiment.media.type === "video" ? (
+        <video
+          src={experiment.media.src}
+          aria-label={experiment.media.alt}
+          muted
+          loop
+          playsinline
+          preload="metadata"
+        />
+      ) : (
+        <img src={experiment.media.src} alt={experiment.media.alt} loading="lazy" />
+      )
+    }
+    <figcaption>{experiment.description}</figcaption>
+  </figure>
+</a>

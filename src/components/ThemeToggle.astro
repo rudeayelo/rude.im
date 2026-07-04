@@ -1,0 +1,34 @@
+<button class="theme-toggle" type="button" aria-label="Toggle color theme">
+  <span class="theme-toggle__track" aria-hidden="true">
+    <span class="theme-toggle__knob"></span>
+  </span>
+  <span class="theme-toggle__label">Theme</span>
+</button>
+
+<script>
+  const storageKey = "rude-theme";
+  const root = document.documentElement;
+  const toggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
+
+  const getSystemTheme = () =>
+    window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+  const applyTheme = (theme: "light" | "dark", explicit = true) => {
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+    toggle?.setAttribute("aria-pressed", String(theme === "dark"));
+
+    if (explicit) {
+      localStorage.setItem(storageKey, theme);
+    }
+  };
+
+  const storedTheme = localStorage.getItem(storageKey);
+  const initialTheme = storedTheme === "light" || storedTheme === "dark" ? storedTheme : getSystemTheme();
+
+  applyTheme(initialTheme, false);
+
+  toggle?.addEventListener("click", () => {
+    applyTheme(root.dataset.theme === "dark" ? "light" : "dark");
+  });
+</script>

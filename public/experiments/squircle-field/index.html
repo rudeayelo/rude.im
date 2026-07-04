@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Squircle Field</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: light-dark(#f2f3f3, #111213);
+        --fg: light-dark(#001e33, #e4e6e7);
+        --muted: light-dark(#5d6468, #8f979b);
+        --line: color-mix(in srgb, var(--fg), transparent 84%);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100dvh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      main {
+        width: min(920px, calc(100vw - 32px));
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 12px;
+      }
+
+      .cell {
+        min-height: 148px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--line);
+        border-radius: 38px;
+        background:
+          linear-gradient(135deg, color-mix(in srgb, var(--fg), transparent 92%), transparent),
+          color-mix(in srgb, var(--bg), var(--fg) 4%);
+        transition: transform 240ms ease, border-color 240ms ease, background 240ms ease;
+      }
+
+      .cell:nth-child(1) {
+        grid-column: span 2;
+        min-height: 308px;
+        border-radius: 76px;
+      }
+
+      .cell:nth-child(2) {
+        grid-column: span 4;
+        border-radius: 64px;
+      }
+
+      .cell:nth-child(3),
+      .cell:nth-child(4) {
+        grid-column: span 3;
+      }
+
+      .mark {
+        width: 72px;
+        height: 72px;
+        border-radius: 26px;
+        background: var(--fg);
+        box-shadow:
+          0 0 0 12px color-mix(in srgb, var(--fg), transparent 92%),
+          0 24px 60px color-mix(in srgb, var(--fg), transparent 78%);
+      }
+
+      p {
+        width: min(24ch, 80%);
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(1.25rem, 4vw, 2.7rem);
+        line-height: 1.05;
+      }
+
+      @media (hover: hover) {
+        .cell:hover {
+          transform: translateY(-4px);
+          border-color: color-mix(in srgb, var(--fg), transparent 58%);
+        }
+      }
+
+      @media (max-width: 720px) {
+        main {
+          grid-template-columns: 1fr;
+        }
+
+        .cell,
+        .cell:nth-child(1),
+        .cell:nth-child(2),
+        .cell:nth-child(3),
+        .cell:nth-child(4) {
+          grid-column: auto;
+          min-height: 160px;
+          border-radius: 42px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .cell {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main aria-label="Squircle field CSS experiment">
+      <div class="cell"><div class="mark"></div></div>
+      <div class="cell"><p>Continuous corners as layout rhythm.</p></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </main>
+  </body>
+</html>
