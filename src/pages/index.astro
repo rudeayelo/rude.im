@@ -59,9 +59,8 @@ const pageDescription =
     --background: #f4f5f5;
     --text: #001e33;
     --text-muted: #6b7377;
-    --toggle-bg: hsl(205, 5%, 10%);
-    --toggle-text: hsl(205, 5%, 45%);
-    --toggle-text-hover: hsl(205, 5%, 90%);
+    --toggle-text: hsl(205, 5%, 35%);
+    --toggle-text-hover: #001e33;
     --focus: hsl(205, 90%, 45%);
   }
 
@@ -70,6 +69,8 @@ const pageDescription =
     --background: #111213;
     --text: #e4e6e7;
     --text-muted: #858d91;
+    --toggle-text: hsl(205, 5%, 65%);
+    --toggle-text-hover: #e4e6e7;
   }
 
   * {
@@ -101,7 +102,7 @@ const pageDescription =
 
   .site-header {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 24px;
   }
@@ -123,10 +124,12 @@ const pageDescription =
     position: relative;
     display: inline-flex;
     align-items: center;
-    padding: 12px;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
     border: 0;
-    border-radius: 22px;
-    background: var(--toggle-bg);
+    background: transparent;
     color: var(--toggle-text);
     cursor: pointer;
   }
@@ -142,6 +145,8 @@ const pageDescription =
 
   .theme-toggle svg {
     display: block;
+    width: 22px;
+    height: 22px;
   }
 
   .visually-hidden {
