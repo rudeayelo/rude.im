@@ -2,9 +2,9 @@
 
 Personal experiment hub for Rude Ayelo.
 
-The homepage is a small Astro bento grid. Experiments are intentionally loose:
-they can be static folders, Astro routes, or built output from another framework
-as long as the grid `href` points to a working demo.
+The homepage is currently a small header and intro prototype. Experiments are
+intentionally loose: they can be static folders, Astro routes, or built output
+from another framework as long as their `href` points to a working demo.
 
 ## Commands
 
@@ -21,5 +21,4 @@ npm run preview
 3. Add an entry to `src/data/experiments.ts`.
 4. Run `npm run build`.
 
-Experiment tiles visibly show media and description. Titles and tags are kept
-as metadata for accessibility, SEO, and future indexing.
+Experiment metadata is kept in `src/data/experiments.ts` for future indexing.

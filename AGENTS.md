@@ -2,7 +2,7 @@
 
 This is Rude Ayelo's personal experiment hub. Keep the homepage small,
 visual, and durable; experiments may use any technology that can be linked
-from the grid.
+from the site.
 
 ## Commands
 
@@ -19,7 +19,7 @@ from the grid.
 - Optional metadata: `source`.
 - Experiments can be plain folders under `public/experiments/`, Astro pages,
   or generated framework builds, as long as `href` works in production.
-- Tiles show media and description only; `title` and `tags` are metadata.
+- `title` and `tags` are metadata for future indexing.
 
 ## Commits
 
