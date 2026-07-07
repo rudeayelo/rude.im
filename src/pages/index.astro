@@ -49,6 +49,16 @@ const pageDescription =
         architecture and UX to drive clarity, quality and momentum.
       </p>
       <p class="role"><span>Engineering lead at <a class="g2-link" href="https://g2.com">G2</a></span></p>
+
+      <section class="aside-quote" aria-labelledby="aside-quote-title">
+        <h2 id="aside-quote-title">I was once told</h2>
+        <figure>
+          <blockquote>
+            <p>“You’re not rude at all”</p>
+          </blockquote>
+          <figcaption>Student, Ironhack, 2015</figcaption>
+        </figure>
+      </section>
     </main>
   </body>
 </html>
@@ -233,6 +243,54 @@ const pageDescription =
 
   .g2-link {
     color: #ff492c;
+  }
+
+  .aside-quote {
+    margin-top: 120px;
+    max-width: 41ch;
+  }
+
+  .aside-quote h2,
+  .aside-quote p,
+  .aside-quote figure,
+  .aside-quote blockquote,
+  .aside-quote figcaption {
+    margin: 0;
+  }
+
+  .aside-quote h2 {
+    font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+    font-weight: 350;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+
+  .aside-quote figure {
+    margin-top: 36px;
+  }
+
+  .aside-quote blockquote {
+    font-style: italic;
+  }
+
+  .aside-quote blockquote p {
+    font-size: clamp(0.9rem, 2.54vw, 2.565rem);
+    font-weight: 350;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+  }
+
+  .aside-quote figcaption {
+    margin-top: 36px;
+    font-size: clamp(0.9rem, 1.6vw, 1.25rem);
+    font-weight: 350;
+    line-height: 1.3;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
   }
 
   @media (max-width: 620px) {
