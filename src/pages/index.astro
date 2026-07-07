@@ -58,7 +58,7 @@ const pageDescription =
     color-scheme: light;
     --background: #f4f5f5;
     --text: #001e33;
-    --text-muted: #6b7377;
+    --link: #566268;
     --toggle-text: hsl(205, 5%, 35%);
     --toggle-text-hover: #001e33;
     --focus: hsl(205, 90%, 45%);
@@ -68,7 +68,7 @@ const pageDescription =
     color-scheme: dark;
     --background: #111213;
     --text: #e4e6e7;
-    --text-muted: #858d91;
+    --link: #a7adb0;
     --toggle-text: hsl(205, 5%, 65%);
     --toggle-text-hover: #e4e6e7;
   }
@@ -91,7 +91,10 @@ const pageDescription =
   }
 
   a {
-    color: inherit;
+    color: var(--link);
+    text-decoration-line: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.14em;
   }
 
   .shell {
@@ -111,6 +114,7 @@ const pageDescription =
     --logo-size: 40px;
     display: flex;
     align-items: center;
+    color: var(--text);
     width: calc(var(--logo-size) * 1.18);
     height: var(--logo-size);
     text-decoration: none;
@@ -202,16 +206,12 @@ const pageDescription =
     margin-top: 24px;
   }
 
-  .intro span {
-    color: var(--text-muted);
-  }
-
   .role {
     display: flex;
     align-items: center;
     gap: clamp(8px, 1vw, 12px);
     margin: 72px 0 0;
-    color: var(--text-muted);
+    color: var(--text);
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
     font-weight: 350;
     line-height: 1.3;
@@ -229,12 +229,6 @@ const pageDescription =
     flex: 0 0 auto;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
-  }
-
-  .role a {
-    color: var(--text);
-    text-decoration-thickness: 0.08em;
-    text-underline-offset: 0.14em;
   }
 
   @media (max-width: 620px) {
