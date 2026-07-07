@@ -107,23 +107,24 @@ const pageDescription =
   }
 
   .site-logo {
+    --logo-size: 40px;
     display: flex;
     align-items: center;
-    width: 72px;
-    height: 60px;
+    width: calc(var(--logo-size) * 1.18);
+    height: var(--logo-size);
     text-decoration: none;
   }
 
   .logo-light {
     display: block;
-    width: 60px;
-    height: 60px;
+    width: var(--logo-size);
+    height: var(--logo-size);
   }
 
   .logo-dark {
     display: none;
-    width: 70.7px;
-    height: 60px;
+    width: calc(var(--logo-size) * 1.1786);
+    height: var(--logo-size);
   }
 
   :root[data-theme="dark"] .logo-light {
@@ -132,6 +133,12 @@ const pageDescription =
 
   :root[data-theme="dark"] .logo-dark {
     display: block;
+  }
+
+  @media (min-width: 800px) {
+    .site-logo {
+      --logo-size: 60px;
+    }
   }
 
   .theme-toggle {
