@@ -108,6 +108,7 @@ const pageDescription =
   }
 
   .shell {
+    container-type: inline-size;
     width: min(1180px, calc(100vw - 32px));
     margin: 0 auto;
     padding: clamp(24px, 5vw, 56px) 0;
@@ -201,7 +202,7 @@ const pageDescription =
     max-width: 41ch;
     margin: 0;
     font-size: clamp(0.9rem, 2.54vw, 2.565rem);
-    font-weight: 350;
+    font-weight: clamp(200, calc(350 - ((100cqw - 366px) / 814px) * 150), 350);
     line-height: 1.3;
     letter-spacing: 0;
     text-box-trim: trim-both;
@@ -223,7 +224,7 @@ const pageDescription =
     margin: 72px 0 0;
     color: var(--text);
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
-    font-weight: 350;
+    font-weight: clamp(300, calc(350 - ((100cqw - 366px) / 814px) * 50), 350);
     line-height: 1.3;
   }
 
@@ -263,7 +264,7 @@ const pageDescription =
 
   .aside-quote h2 {
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
-    font-weight: 350;
+    font-weight: clamp(300, calc(350 - ((100cqw - 366px) / 814px) * 50), 350);
     line-height: 1.3;
     letter-spacing: 0;
     text-box-trim: trim-both;
@@ -290,7 +291,7 @@ const pageDescription =
 
   .aside-quote figcaption {
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
-    font-weight: 350;
+    font-weight: clamp(300, calc(350 - ((100cqw - 366px) / 814px) * 50), 350);
     line-height: 1.3;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
