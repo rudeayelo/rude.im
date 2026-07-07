@@ -48,7 +48,7 @@ const pageDescription =
         leadership, frontend architecture and UX to drive clarity, quality and
         momentum.
       </p>
-      <p class="role">Engineering lead at <a href="https://g2.com">G2</a></p>
+      <p class="role"><span>Engineering lead at <a href="https://g2.com">G2</a></span></p>
     </main>
   </body>
 </html>
@@ -197,11 +197,26 @@ const pageDescription =
   }
 
   .role {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 2vw, 24px);
     margin: 18px 0 0;
     color: var(--text-muted);
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
     font-weight: 350;
     line-height: 1.3;
+  }
+
+  .role::before {
+    content: "";
+    flex: 1 1 auto;
+    block-size: 1px;
+    background: currentColor;
+    opacity: 0.35;
+  }
+
+  .role span {
+    flex: 0 0 auto;
   }
 
   .role a {
