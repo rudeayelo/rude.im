@@ -254,7 +254,7 @@ const pageDescription =
   .role::before {
     content: "";
     flex: 1 1 auto;
-    block-size: 1.5px;
+    block-size: 1px;
     background: var(--text);
   }
 
@@ -274,8 +274,14 @@ const pageDescription =
 
   .g2-link svg {
     display: block;
-    inline-size: 1.08em;
-    block-size: 1.08em;
+    inline-size: 1.3em;
+    block-size: 1.3em;
+  }
+
+  @media (min-width: 800px) {
+    .role::before {
+      block-size: 1.5px;
+    }
   }
 
   .aside-quote {
