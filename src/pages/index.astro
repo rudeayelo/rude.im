@@ -54,12 +54,54 @@ const pageDescription =
         <h2 id="aside-quote-title">I was once told</h2>
         <figure>
           <blockquote>
-            <p>“You’re not rude at all”</p>
+            <p data-fit-text>“You’re not rude at all”</p>
           </blockquote>
           <figcaption>Student, Ironhack, 2015</figcaption>
         </figure>
       </section>
     </main>
+    <script>
+      const fitTextElements = document.querySelectorAll("[data-fit-text]");
+
+      const fitText = (element) => {
+        const container = element.parentElement;
+
+        if (!container) return;
+
+        const availableWidth = container.getBoundingClientRect().width;
+        let min = 16;
+        let max = 240;
+
+        element.style.fontSize = `${min}px`;
+
+        for (let i = 0; i < 16; i += 1) {
+          const size = (min + max) / 2;
+          element.style.fontSize = `${size}px`;
+
+          if (element.scrollWidth <= availableWidth) {
+            min = size;
+          } else {
+            max = size;
+          }
+        }
+
+        element.style.fontSize = `${Math.floor(min)}px`;
+      };
+
+      const fitAllText = () => {
+        fitTextElements.forEach(fitText);
+      };
+
+      fitAllText();
+      document.fonts?.ready.then(fitAllText);
+
+      const resizeObserver = new ResizeObserver(fitAllText);
+      fitTextElements.forEach((element) => {
+        if (element.parentElement) {
+          resizeObserver.observe(element.parentElement);
+        }
+      });
+    </script>
   </body>
 </html>
 
@@ -249,7 +291,6 @@ const pageDescription =
     display: grid;
     gap: 28px;
     margin-top: 120px;
-    max-width: 41ch;
   }
 
   .aside-quote h2,
@@ -280,9 +321,13 @@ const pageDescription =
   }
 
   .aside-quote blockquote p {
-    font-size: clamp(1.6rem, 5vw, 4rem);
+    display: block;
+    overflow: hidden;
+    inline-size: 100%;
+    white-space: nowrap;
+    font-size: 1rem;
     font-weight: 350;
-    line-height: 1.3;
+    line-height: 1;
     letter-spacing: 0;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
