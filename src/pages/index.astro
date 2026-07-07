@@ -43,10 +43,10 @@ const pageDescription =
         <ThemeToggle />
       </header>
 
-      <p class="intro">
-        <span>Rude Ayelo</span> leads teams building products at scale, aligning
-        leadership, frontend architecture and UX to drive clarity, quality and
-        momentum.
+      <p class="intro intro-greeting">Hi— I’m <span>Rude Ayelo</span>.</p>
+      <p class="intro intro-statement">
+        I lead teams building products at scale, aligning leadership, frontend
+        architecture and UX to drive clarity, quality and momentum.
       </p>
       <p class="role"><span>Engineering lead at <a href="https://g2.com">G2</a></span></p>
     </main>
@@ -185,13 +185,21 @@ const pageDescription =
 
   .intro {
     max-width: 41ch;
-    margin: 100px 0 0;
+    margin: 0;
     font-size: clamp(0.9rem, 2.54vw, 2.565rem);
     font-weight: 350;
     line-height: 1.3;
     letter-spacing: 0;
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
+  }
+
+  .intro-greeting {
+    margin-top: 100px;
+  }
+
+  .intro-statement {
+    margin-top: 24px;
   }
 
   .intro span {
@@ -235,7 +243,7 @@ const pageDescription =
       padding-top: 18px;
     }
 
-    .intro {
+    .intro-greeting {
       margin-top: 100px;
     }
   }
