@@ -135,12 +135,18 @@ const pageDescription =
 
   .shell {
     container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
     width: min(1180px, calc(100vw - 32px));
     margin: 0 auto;
     padding: clamp(24px, 5vw, 56px) 0;
   }
 
   .bubble {
+    max-inline-size: 100%;
+    inline-size: fit-content;
     border-radius: 2em;
     corner-shape: superellipse(1.5);
     background: var(--text);
@@ -148,8 +154,9 @@ const pageDescription =
   }
 
   .site-header {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    max-inline-size: 100%;
+    inline-size: fit-content;
     gap: 0;
   }
 
@@ -158,10 +165,6 @@ const pageDescription =
     align-items: center;
     min-block-size: 88px;
     padding: 20px;
-  }
-
-  .toggle-bubble {
-    justify-content: flex-end;
   }
 
   .site-logo {
@@ -266,7 +269,7 @@ const pageDescription =
   .role {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     margin: 0;
     padding: clamp(24px, 4cqi, 48px);
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
@@ -296,11 +299,11 @@ const pageDescription =
   }
 
   .aside-quote {
-    container-type: inline-size;
+    --bubble-padding: clamp(32px, 7cqi, 80px);
     display: grid;
     gap: 28px;
     margin: 0;
-    padding: clamp(32px, 7cqi, 80px);
+    padding: var(--bubble-padding);
   }
 
   .aside-quote h2,
@@ -330,7 +333,7 @@ const pageDescription =
 
   .aside-quote blockquote p {
     display: block;
-    font-size: 6.9cqw;
+    font-size: calc((100cqw - 2 * var(--bubble-padding)) * 0.069);
     font-weight: clamp(100, calc(300 - ((100cqw - 366px) / 814px) * 200), 300);
     line-height: 1;
   }
