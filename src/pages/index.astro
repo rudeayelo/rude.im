@@ -37,22 +37,29 @@ const pageDescription =
   <body>
     <main class="shell" aria-label="Rude Ayelo experiment hub">
       <header class="site-header" aria-label="Site header">
-        <a class="site-logo" href="/" aria-label="Rude Ayelo">
-          <SiteLogo />
-        </a>
-        <ThemeToggle />
+        <div class="bubble header-bubble logo-bubble">
+          <a class="site-logo" href="/" aria-label="Rude Ayelo">
+            <SiteLogo />
+          </a>
+        </div>
+        <div class="bubble header-bubble toggle-bubble">
+          <ThemeToggle />
+        </div>
       </header>
 
-      <p class="intro intro-greeting">Hi — I’m <span>Rude Ayelo</span>.</p>
-      <p class="intro intro-statement">
-        I lead teams building products at scale, aligning leadership, frontend
-        architecture and UX to drive clarity, quality and momentum.
-      </p>
-      <p class="role">
+      <section class="bubble intro-bubble" aria-label="Introduction">
+        <p class="intro">Hi — I’m <span>Rude Ayelo</span>.</p>
+        <p class="intro intro-statement">
+          I lead teams building products at scale, aligning leadership, frontend
+          architecture and UX to drive clarity, quality and momentum.
+        </p>
+      </section>
+
+      <p class="bubble role">
         <span>
           Engineering lead at
           <a class="g2-link" href="https://g2.com" aria-label="G2">
-            <svg fill="#FF492C" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg fill="currentColor" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <title>G2</title>
               <path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24Zm.122 5.143c.45 0 .9.044 1.342.132l-1.342 2.806C9.962 8.08 8.203 9.84 8.203 12s1.76 3.92 3.92 3.92c.937 0 1.844-.338 2.553-.951l1.483 2.572A6.856 6.856 0 0 1 5.266 12a6.856 6.856 0 0 1 6.856-6.856Zm3.498.49a1.262 1.262 0 0 1 .026 0c.427 0 .792.113 1.101.34.31.229.466.546.466.946 0 .639-.36 1.03-1.035 1.376l-.377.191c-.403.204-.602.385-.657.706h2.05v.85h-3.101v-.144c0-.526.103-.96.314-1.306.211-.345.576-.65 1.102-.917l.242-.117c.427-.216.538-.401.538-.625 0-.266-.228-.458-.6-.458-.44 0-.773.228-1.004.694l-.592-.595c.13-.279.338-.502.619-.675a1.7 1.7 0 0 1 .908-.266Zm-2.094 5.388h3.394l1.697 2.937-1.697 2.94-1.697-2.94H11.83l1.696-2.937Z" />
             </svg>
@@ -60,7 +67,7 @@ const pageDescription =
         </span>
       </p>
 
-      <section class="aside-quote" aria-labelledby="aside-quote-title">
+      <section class="bubble aside-quote" aria-labelledby="aside-quote-title">
         <h2 id="aside-quote-title">I was once told</h2>
         <figure>
           <blockquote>
@@ -79,9 +86,6 @@ const pageDescription =
     --background: #f4f5f5;
     --text: #001e33;
     --link: #566268;
-    --toggle-text: hsl(205, 5%, 35%);
-    --toggle-text-hover: #001e33;
-    --focus: hsl(205, 90%, 45%);
   }
 
   :root[data-theme="dark"] {
@@ -89,8 +93,6 @@ const pageDescription =
     --background: #111213;
     --text: #e4e6e7;
     --link: #a7adb0;
-    --toggle-text: hsl(205, 5%, 65%);
-    --toggle-text-hover: #e4e6e7;
   }
 
   * {
@@ -138,18 +140,35 @@ const pageDescription =
     padding: clamp(24px, 5vw, 56px) 0;
   }
 
+  .bubble {
+    border-radius: 2em;
+    corner-shape: superellipse(1.5);
+    background: var(--text);
+    color: var(--background);
+  }
+
   .site-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+
+  .header-bubble {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+    min-block-size: 88px;
+    padding: 20px;
+  }
+
+  .toggle-bubble {
+    justify-content: flex-end;
   }
 
   .site-logo {
     --logo-size: 40px;
     display: flex;
     align-items: center;
-    color: var(--text);
+    color: inherit;
     width: calc(var(--logo-size) * 1.18);
     height: var(--logo-size);
     text-decoration: none;
@@ -191,17 +210,17 @@ const pageDescription =
     padding: 0;
     border: 0;
     background: transparent;
-    color: var(--toggle-text);
+    color: inherit;
     cursor: pointer;
   }
 
   .theme-toggle:hover {
-    color: var(--toggle-text-hover);
+    opacity: 0.7;
   }
 
-  .theme-toggle:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px var(--focus);
+  .theme-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 
   .theme-toggle svg {
@@ -232,8 +251,8 @@ const pageDescription =
     text-wrap: pretty;
   }
 
-  .intro-greeting {
-    margin-top: 100px;
+  .intro-bubble {
+    padding: clamp(32px, 7cqi, 80px);
   }
 
   .intro + .intro {
@@ -247,19 +266,12 @@ const pageDescription =
   .role {
     display: flex;
     align-items: center;
-    gap: clamp(8px, 1vw, 12px);
-    margin: 72px 0 0;
-    color: var(--text);
+    justify-content: flex-end;
+    margin: 0;
+    padding: clamp(24px, 4cqi, 48px);
     font-size: clamp(0.9rem, 1.6vw, 1.25rem);
     font-weight: clamp(300, calc(350 - ((100cqw - 366px) / 814px) * 50), 350);
     line-height: 1.3;
-  }
-
-  .role::before {
-    content: "";
-    flex: 1 1 auto;
-    block-size: 1px;
-    background: var(--text);
   }
 
   .role span {
@@ -273,6 +285,7 @@ const pageDescription =
     display: inline-flex;
     align-items: center;
     vertical-align: -0.12em;
+    color: inherit;
     text-decoration: none;
   }
 
@@ -282,17 +295,12 @@ const pageDescription =
     block-size: 1.3em;
   }
 
-  @media (min-width: 800px) {
-    .role::before {
-      block-size: 1.5px;
-    }
-  }
-
   .aside-quote {
     container-type: inline-size;
     display: grid;
     gap: 28px;
-    margin-top: 120px;
+    margin: 0;
+    padding: clamp(32px, 7cqi, 80px);
   }
 
   .aside-quote h2,
@@ -339,8 +347,9 @@ const pageDescription =
       padding-top: 18px;
     }
 
-    .intro-greeting {
-      margin-top: 100px;
+    .header-bubble {
+      min-block-size: 72px;
+      padding: 16px;
     }
   }
 
