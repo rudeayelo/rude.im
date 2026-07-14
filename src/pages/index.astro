@@ -117,7 +117,7 @@ const pageDescription =
     --link: #566268;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: none;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -145,6 +145,14 @@ const pageDescription =
     font-family: "Departure Mono", monospace;
     font-size: 16px;
     font-size-adjust: from-font;
+  }
+
+  button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
   }
 
   a {
