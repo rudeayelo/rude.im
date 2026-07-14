@@ -17,9 +17,25 @@ const pageDescription =
     <meta property="og:description" content={pageDescription} />
     <meta name="twitter:card" content="summary" />
     <title>{pageTitle}</title>
+    <script is:inline>
+      {
+        const storageKey = "rude-theme";
+        const storedTheme = localStorage.getItem(storageKey);
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        const theme = storedTheme === "light" || storedTheme === "dark"
+          ? storedTheme
+          : systemTheme;
+
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="color-scheme"]').content = theme;
+      }
+    </script>
   </head>
   <body>
     <main>
+      <button id="theme-toggle" type="button">✧ Toggle dark mode</button>
       <p>Hi — I’m Rude Ayelo.</p>
       <p>
         I lead teams building products at scale, aligning leadership, frontend
@@ -46,6 +62,42 @@ const pageDescription =
         <p class="type-test-11">Rude Ayelo</p>
       </section>
     </main>
+    <script>
+      const storageKey = "rude-theme";
+      const root = document.documentElement;
+      const colorScheme = document.querySelector('meta[name="color-scheme"]');
+      const toggle = document.querySelector("#theme-toggle");
+      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const renderToggle = () => {
+        const isDark = root.dataset.theme === "dark";
+        toggle.textContent = isDark
+          ? "✦ Toggle light mode"
+          : "✧ Toggle dark mode";
+        toggle.setAttribute("aria-pressed", String(isDark));
+      };
+
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        colorScheme.setAttribute("content", theme);
+        renderToggle();
+      };
+
+      toggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+
+        localStorage.setItem(storageKey, theme);
+        applyTheme(theme);
+      });
+
+      systemPreference.addEventListener("change", (event) => {
+        if (!localStorage.getItem(storageKey)) {
+          applyTheme(event.matches ? "dark" : "light");
+        }
+      });
+
+      renderToggle();
+    </script>
   </body>
 </html>
 
@@ -63,14 +115,28 @@ const pageDescription =
     --background: #f4f5f5;
     --text: #001e33;
     --link: #566268;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme]) {
       --background: #111213;
       --text: #e4e6e7;
       --link: #a7adb0;
     }
+  }
+
+  :root[data-theme="light"] {
+    color-scheme: light;
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --background: #111213;
+    --text: #e4e6e7;
+    --link: #a7adb0;
   }
 
   body {
