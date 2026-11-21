@@ -1,0 +1,25 @@
+@font-face {
+  font-family: "Departure Mono";
+  src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+.type-heading,
+.type-body {
+  font-family: "Departure Mono", monospace;
+  font-size: 16.5px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.type-heading {
+  text-transform: uppercase;
+}
+
+.type-body {
+  text-transform: none;
+}

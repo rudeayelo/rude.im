@@ -1,0 +1,195 @@
+---
+import "../styles/links.css";
+import "../styles/typography.css";
+
+const pageTitle = "Rude Ayelo / Styleguide";
+const pageDescription = "The visual language and interface experiments for rude.im.";
+const terminalWidth = 75;
+const contentWidth = terminalWidth - 6;
+const horizontalRule = "─".repeat(terminalWidth - 2);
+const frameTop = `╭${horizontalRule}╮`;
+const frameDivider = `├${horizontalRule}┤`;
+const frameBottom = `╰${horizontalRule}╯`;
+const frameLine = (content = "") =>
+  `│  ${content.padEnd(contentWidth, " ")}  │`;
+const frameSection = (title: string) =>
+  [frameLine(), frameLine(title), frameLine()].join("\n");
+const frameStart = "│  ";
+const frameEnd = "  │";
+const frameSpacing = (content: string) =>
+  " ".repeat(Math.max(0, contentWidth - content.length));
+const homeText = "Home";
+const homeLabel = "← Home";
+const themeToggleLabel = "✧ Toggle dark mode ";
+const headerSpacing = " ".repeat(
+  Math.max(0, contentWidth - homeLabel.length - themeToggleLabel.length),
+);
+const linkExample = "This is a link";
+const linkExampleLabel = `${linkExample} ↗`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={pageDescription} />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      {
+        const storageKey = "rude-theme";
+        const storedTheme = localStorage.getItem(storageKey);
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        const theme = storedTheme === "light" || storedTheme === "dark"
+          ? storedTheme
+          : systemTheme;
+
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="color-scheme"]').content = theme;
+      }
+    </script>
+  </head>
+  <body class="type-body">
+    <main>
+      <h1 class="visually-hidden">Styleguide</h1>
+      <section aria-labelledby="typography-title">
+        <h2 id="typography-title" class="visually-hidden">Typography</h2>
+        <pre class="terminal"><span aria-hidden="true">{frameTop}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span>{frameStart}<a class="link-back" href="/">{homeText}</a>{headerSpacing}<button id="theme-toggle" type="button">{themeToggleLabel}</button>{frameEnd}</span>
+<span aria-hidden="true">{frameDivider}</span>
+<span class="type-heading">{frameLine("Styleguide")}</span>
+<span aria-hidden="true">{frameDivider}</span>
+<span class="type-heading">{frameSection("Typography")}</span>
+<span class="type-heading">{frameLine("Heading")}</span>
+<span class="type-heading">{frameLine("The quick brown fox jumps over the lazy dog.")}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span class="type-body">{frameLine("Body")}</span>
+<span class="type-body">{frameLine("The quick brown fox jumps over the lazy dog.")}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span class="type-body">{frameLine("Link")}</span>
+<span>{frameStart}<a href="/">{linkExample}</a>{frameSpacing(linkExampleLabel)}{frameEnd}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span aria-hidden="true">{frameBottom}</span></pre>
+      </section>
+    </main>
+    <script>
+      const storageKey = "rude-theme";
+      const root = document.documentElement;
+      const colorScheme = document.querySelector('meta[name="color-scheme"]');
+      const toggle = document.querySelector("#theme-toggle");
+      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const renderToggle = () => {
+        const isDark = root.dataset.theme === "dark";
+
+        toggle.textContent = isDark
+          ? "✦ Toggle light mode"
+          : "✧ Toggle dark mode ";
+        toggle.setAttribute("aria-pressed", String(isDark));
+        toggle.setAttribute(
+          "aria-label",
+          isDark ? "Switch to light mode" : "Switch to dark mode",
+        );
+      };
+
+      const applyTheme = (theme) => {
+        root.dataset.theme = theme;
+        colorScheme.setAttribute("content", theme);
+        renderToggle();
+      };
+
+      toggle.addEventListener("click", () => {
+        const theme = root.dataset.theme === "dark" ? "light" : "dark";
+
+        localStorage.setItem(storageKey, theme);
+        applyTheme(theme);
+      });
+
+      systemPreference.addEventListener("change", (event) => {
+        if (!localStorage.getItem(storageKey)) {
+          applyTheme(event.matches ? "dark" : "light");
+        }
+      });
+
+      renderToggle();
+    </script>
+  </body>
+</html>
+
+<style>
+  :global(:root) {
+    color-scheme: light dark;
+    --background: #f4f5f5;
+    --text: #001e33;
+    --link: #566268;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme])) {
+      --background: #111213;
+      --text: #e4e6e7;
+      --link: #a7adb0;
+    }
+  }
+
+  :global(:root[data-theme="light"]) {
+    color-scheme: light;
+  }
+
+  :global(:root[data-theme="dark"]) {
+    color-scheme: dark;
+    --background: #111213;
+    --text: #e4e6e7;
+    --link: #a7adb0;
+  }
+
+  :global(body) {
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--text);
+  }
+
+  :global(a) {
+    color: var(--link);
+  }
+
+  :global(button) {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    white-space: pre;
+  }
+
+  .terminal {
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow-x: auto;
+    color: inherit;
+    font: inherit;
+    white-space: pre;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

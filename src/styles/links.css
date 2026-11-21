@@ -1,0 +1,15 @@
+a {
+  text-decoration: none;
+}
+
+a::after {
+  content: " ↗";
+}
+
+a.link-back::before {
+  content: "← ";
+}
+
+a.link-back::after {
+  content: "";
+}
