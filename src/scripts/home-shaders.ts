@@ -233,15 +233,12 @@ const mount = async (
 const start = async () => {
   if (!logo || !background) return;
 
-  // Without WebGPU, don't download the shader runtime at all.
+  // Without WebGPU, or without a usable adapter, don't download the runtime.
   if (!("gpu" in navigator) || !navigator.gpu) return failAll("unsupported");
+  const adapter = await navigator.gpu.requestAdapter().catch(() => null);
+  if (!adapter) return failAll("no-adapter");
 
-  const [{ createShader, getWebGPUSupport }, sdfUrl] = await Promise.all([
-    import("shaders/js"),
-    loadSdf(),
-  ]);
-  const support = await getWebGPUSupport();
-  if (!support.supported) return failAll(support.reason ?? "unsupported");
+  const [{ createShader }, sdfUrl] = await Promise.all([import("shaders/js"), loadSdf()]);
 
   const still = isStill();
   const shared = { disableTelemetry: true };
