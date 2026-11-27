@@ -171,7 +171,11 @@ const mount = async (
   try {
     shader = await create({
       onReady: () => {
-        if (layer.state === "pending") onFrame();
+        if (layer.state !== "pending") return;
+        // Also the first frame of a renderer rebuilt after a device loss,
+        // which starts from the speeds it was created with.
+        applyMotion(layer);
+        onFrame();
       },
       onError: (reason) => {
         if (TERMINAL_REASONS.has(reason)) {
