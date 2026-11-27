@@ -2,8 +2,8 @@
 //
 // The page is fully usable without this script. The flat lettermark stays
 // visible until a rendered frame actually contains the chrome mark, comes back
-// at once while the GPU recovers from a device loss, and stays for good
-// whenever the logo can't be drawn.
+// at once while the GPU recovers from a device loss, and stays for good (with
+// the background stopped and hidden) whenever the logo can't be drawn.
 
 import type { ShaderInstance } from "shaders/js";
 
@@ -84,6 +84,10 @@ const fail = (layer: Layer, reason: string) => {
   setState(layer, "failed");
   layer.shader?.destroy();
   console.info(`[home] ${layer.stateKey} unavailable (${reason}); showing the static fallback.`);
+
+  // One fallback state: no chrome logo means no animated cloth either, just
+  // the flat mark over the plain page colour.
+  if (layer === logo && background) fail(background, `logo ${reason}`);
 };
 
 const failAll = (reason: string) => layers.forEach((layer) => fail(layer, reason));
