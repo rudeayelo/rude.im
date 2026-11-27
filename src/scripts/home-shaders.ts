@@ -15,7 +15,6 @@ const LOGO_SPEED = 0.5;
 const SATIN_SPEED = 1.13;
 
 const SDF_URL = "/brand/logo_sdf.bin";
-const SDF_SIZE = 512; // Shaders' compact SDF: 512 × 512 uint16.
 const SDF_TIMEOUT_MS = 10_000;
 // Rendering time (only counted while the page is visible) the chrome canvas
 // gets to show the mark before we settle for the flat one.
@@ -152,38 +151,13 @@ const watchForMark = (layer: Layer) => {
   requestAnimationFrame(tick);
 };
 
-// Fetches and sanity-checks the SDF before the shader sees it: Shaders only
-// logs a failed or malformed SDF and draws nothing. The checked bytes are
-// handed over as a blob URL, so the shader (and any rebuild after a device
-// loss) reads exactly these bytes without another network request.
+// Shaders only logs a failed SDF request and then draws nothing, so the page
+// fetches it first and hands the shader the bytes as a blob URL (which any
+// rebuild after a device loss reads again, without another network request).
 const loadSdf = async (): Promise<string> => {
   const response = await fetch(SDF_URL, { signal: AbortSignal.timeout(SDF_TIMEOUT_MS) });
   if (!response.ok) throw new Error(`sdf-http-${response.status}`);
-  const buffer = await response.arrayBuffer();
-  if (!isPlausibleSdf(buffer)) throw new Error("sdf-invalid");
-  return URL.createObjectURL(new Blob([buffer], { type: "application/octet-stream" }));
-};
-
-const isPlausibleSdf = (buffer: ArrayBuffer) => {
-  if (buffer.byteLength !== SDF_SIZE * SDF_SIZE * 2) return false;
-  const raw = new Uint16Array(buffer);
-  const value = (i: number) => raw[i] / 32767.5 - 1; // Same decoding as Shaders.
-
-  // The corners are outside the mark, so their distance is positive.
-  const last = SDF_SIZE * SDF_SIZE - 1;
-  if ([0, SDF_SIZE - 1, last - SDF_SIZE + 1, last].some((i) => value(i) <= 0)) return false;
-
-  // Some of the field is inside the mark, and a distance field changes
-  // smoothly from one cell to the next (noise doesn't).
-  let inside = 0;
-  let step = 0;
-  for (let i = 0; i < raw.length; i++) {
-    if (value(i) < 0) inside++;
-    if (i % SDF_SIZE !== 0) step += Math.abs(value(i) - value(i - 1));
-  }
-  const insideShare = inside / raw.length;
-  const meanStep = step / (SDF_SIZE * (SDF_SIZE - 1));
-  return insideShare > 0.01 && insideShare < 0.9 && meanStep < 0.02;
+  return URL.createObjectURL(await response.blob());
 };
 
 type Callbacks = { onReady: () => void; onError: (reason: string) => void };
