@@ -1,42 +1,27 @@
 // Homepage shaders: chrome lettermark + satin background (shaders.com, WebGPU).
-//
-// The page is fully usable without this script. The flat lettermark stays
-// visible until a rendered frame actually contains the chrome mark, comes back
-// at once while the GPU recovers from a device loss, and stays for good (with
-// the background stopped and hidden) whenever the logo can't be drawn.
+// The page works without this script. The flat lettermark stays visible until a
+// rendered frame contains the chrome mark, returns at once during a device loss,
+// and stays for good (background stopped and hidden) if the logo can't be drawn.
 
 import type { ShaderInstance } from "shaders/js";
 
 const LOGO_ID = "chrome";
 const SATIN_ID = "satin";
-const ZOOM_BLUR_ID = "zoom-blur";
-
 const LOGO_SPEED = 0.5;
 const SATIN_SPEED = 1.13;
 
 const SDF_URL = "/brand/logo_sdf.bin";
 const SDF_TIMEOUT_MS = 10_000;
-// Rendering time (only counted while the page is visible) the chrome canvas
-// gets to show the mark before we settle for the flat one.
+// Visible rendering time the chrome canvas gets to show the mark.
 const MARK_TIMEOUT_MS = 5_000;
-// Share of a 64 × 64 readback that must be opaque to count as "the mark is
-// drawn". The lettermark covers about 14 % of its canvas.
+// Opaque share of a 64 × 64 readback that counts as the mark (it covers ~14 %).
 const MARK_MIN_COVERAGE = 0.03;
 
-// Reasons `onError` reports when a shader will never draw again. Anything else
-// is a recoverable device loss the library rebuilds from on its own.
+// `onError` reasons after which a shader never draws again. Any other reason is
+// a recoverable device loss that the library rebuilds from on its own.
 const TERMINAL_REASONS = new Set([
-  "unsupported",
-  "no-adapter",
-  "no-device",
-  "init-failed",
-  "device-lost",
-  "out-of-memory",
-  "gpu-error",
-  "render-failed",
-  "limit-exceeded",
-  "unrecoverable",
-  "rebuild_failed",
+  "unsupported", "no-adapter", "no-device", "init-failed", "device-lost", "out-of-memory",
+  "gpu-error", "render-failed", "limit-exceeded", "unrecoverable", "rebuild_failed",
 ]);
 
 type LayerState = "pending" | "ready" | "failed";
@@ -48,27 +33,31 @@ type Layer = {
   state: LayerState;
   shader?: ShaderInstance;
   speeds: Record<string, number>;
-  /** Bumped to cancel a running mark check. */
-  watch: number;
+  /** The queued mark check, if any. */
+  frame?: number;
 };
 
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const isStill = () => reducedMotion.matches;
 
-const createLayer = (
-  selector: string,
-  stateKey: Layer["stateKey"],
-  speeds: Layer["speeds"],
-): Layer | undefined => {
+const createLayer = (selector: string, stateKey: Layer["stateKey"], speeds: Layer["speeds"]) => {
   const canvas = document.querySelector<HTMLCanvasElement>(selector);
-  return canvas && { canvas, stateKey, state: "pending", speeds, watch: 0 };
+  return canvas ? ({ canvas, stateKey, state: "pending", speeds } satisfies Layer) : undefined;
 };
 
-const logo = createLayer("[data-logo-canvas]", "logoShader", { [LOGO_ID]: LOGO_SPEED });
-const background = createLayer("[data-background-canvas]", "backgroundShader", {
+const logo: Layer | undefined = createLayer("[data-logo-canvas]", "logoShader", {
+  [LOGO_ID]: LOGO_SPEED,
+});
+const background: Layer | undefined = createLayer("[data-background-canvas]", "backgroundShader", {
   [SATIN_ID]: SATIN_SPEED,
 });
 const layers = [logo, background].filter((layer): layer is Layer => !!layer);
+
+// Shaders fetches the SDF blob URL again whenever it rebuilds after a device
+// loss, so the URL is only revoked once nothing can draw any more.
+const sdfRequest = new AbortController();
+let sdfTimer: number | undefined;
+let sdfUrl: string | undefined;
 
 const setState = (layer: Layer, state: LayerState) => {
   layer.state = state;
@@ -79,14 +68,17 @@ const setState = (layer: Layer, state: LayerState) => {
 
 const fail = (layer: Layer, reason: string) => {
   if (layer.state === "failed") return;
-  layer.watch++;
+  if (layer.frame !== undefined) cancelAnimationFrame(layer.frame);
   setState(layer, "failed");
   layer.shader?.destroy();
   console.info(`[home] ${layer.stateKey} unavailable (${reason}); showing the static fallback.`);
 
-  // One fallback state: no chrome logo means no animated cloth either, just
-  // the flat mark over the plain page colour.
-  if (layer === logo && background) fail(background, `logo ${reason}`);
+  // One fallback state: no chrome logo, no animated cloth either.
+  if (layer === logo && background && background.state !== "failed") {
+    fail(background, `logo ${reason}`);
+  } else if (layers.every((each) => each.state === "failed")) {
+    teardown();
+  }
 };
 
 const failAll = (reason: string) => layers.forEach((layer) => fail(layer, reason));
@@ -98,13 +90,24 @@ const applyMotion = (layer: Layer) => {
   for (const [id, speed] of Object.entries(layer.speeds)) {
     shader.update(id, { speed: isStill() ? 0 : speed });
   }
-
-  // Stopping the loop is what stops the GPU work; a paused shader still
-  // redraws on resize. Under reduced motion we only stop once the layer is
-  // ready: the logo check below needs live frames, and a loop paused before
-  // the SDF upload would keep an empty frame.
+  // Stopping the loop is what stops the GPU work (a paused shader still
+  // redraws on resize). Reduced motion waits for "ready": the mark check needs
+  // live frames, and a loop paused before the SDF upload keeps an empty frame.
   if (document.hidden || (isStill() && layer.state === "ready")) shader.pause();
   else shader.resume();
+};
+
+const applyMotionToAll = () => layers.forEach(applyMotion);
+reducedMotion.addEventListener("change", applyMotionToAll);
+document.addEventListener("visibilitychange", applyMotionToAll);
+
+// Once nothing can draw: stop the SDF request, free its blob, stop listening.
+const teardown = () => {
+  clearTimeout(sdfTimer);
+  sdfRequest.abort();
+  if (sdfUrl) URL.revokeObjectURL(sdfUrl);
+  reducedMotion.removeEventListener("change", applyMotionToAll);
+  document.removeEventListener("visibilitychange", applyMotionToAll);
 };
 
 const setReady = (layer: Layer) => {
@@ -113,9 +116,8 @@ const setReady = (layer: Layer) => {
   applyMotion(layer);
 };
 
-// A WebGPU canvas can only be read back while frames are being presented,
-// which is why the logo keeps animating (at speed 0 under reduced motion)
-// until this succeeds.
+// A WebGPU canvas only reads back while frames are being presented, which is
+// why the logo keeps animating (at speed 0 under reduced motion) until then.
 const probe = document.createElement("canvas");
 probe.width = probe.height = 64;
 const probeContext = probe.getContext("2d", { willReadFrequently: true });
@@ -130,34 +132,37 @@ const showsMark = (canvas: HTMLCanvasElement) => {
   return opaque / 4096 >= MARK_MIN_COVERAGE;
 };
 
-// Marks the logo ready on the first frame that contains the lettermark, or
-// gives up after MARK_TIMEOUT_MS of visible rendering.
+// Ready on the first frame that contains the mark; fails after
+// MARK_TIMEOUT_MS of rendering. rAF stops in a hidden tab, and the capped gap
+// keeps time away from counting.
 const watchForMark = (layer: Layer) => {
-  const token = ++layer.watch;
+  if (layer.frame !== undefined) cancelAnimationFrame(layer.frame);
   let elapsed = 0;
   let last = performance.now();
 
   const tick = (now: number) => {
-    if (token !== layer.watch || layer.state === "failed") return;
-    // rAF doesn't run in a hidden tab, and the gap is capped so the time
-    // away doesn't count against the timeout.
+    layer.frame = undefined;
     elapsed += Math.min(now - last, 100);
     last = now;
-
     if (showsMark(layer.canvas)) setReady(layer);
     else if (elapsed > MARK_TIMEOUT_MS) fail(layer, "no-mark");
-    else requestAnimationFrame(tick);
+    else layer.frame = requestAnimationFrame(tick);
   };
-  requestAnimationFrame(tick);
+  layer.frame = requestAnimationFrame(tick);
 };
 
 // Shaders only logs a failed SDF request and then draws nothing, so the page
-// fetches it first and hands the shader the bytes as a blob URL (which any
-// rebuild after a device loss reads again, without another network request).
-const loadSdf = async (): Promise<string> => {
-  const response = await fetch(SDF_URL, { signal: AbortSignal.timeout(SDF_TIMEOUT_MS) });
-  if (!response.ok) throw new Error(`sdf-http-${response.status}`);
-  return URL.createObjectURL(await response.blob());
+// fetches it first and hands the shader the bytes as a blob URL.
+const loadSdf = async () => {
+  sdfTimer = window.setTimeout(() => sdfRequest.abort(new Error("sdf-timeout")), SDF_TIMEOUT_MS);
+  try {
+    const response = await fetch(SDF_URL, { signal: sdfRequest.signal });
+    if (!response.ok) throw new Error(`sdf-http-${response.status}`);
+    sdfUrl = URL.createObjectURL(await response.blob());
+    return sdfUrl;
+  } finally {
+    clearTimeout(sdfTimer);
+  }
 };
 
 type Callbacks = { onReady: () => void; onError: (reason: string) => void };
@@ -172,46 +177,32 @@ const mount = async (
     shader = await create({
       onReady: () => {
         if (layer.state !== "pending") return;
-        // Also the first frame of a renderer rebuilt after a device loss,
-        // which starts from the speeds it was created with.
+        // Also the first frame after a device-loss rebuild, which starts from
+        // the speeds the shader was created with.
         applyMotion(layer);
         onFrame();
       },
       onError: (reason) => {
-        if (TERMINAL_REASONS.has(reason)) {
-          fail(layer, reason);
-        } else if (layer.state !== "failed") {
-          // Recoverable device loss: the library rebuilds and calls onReady
-          // again. Show the fallback right away and wait for that.
-          layer.watch++;
-          setState(layer, "pending");
-        }
+        if (TERMINAL_REASONS.has(reason)) return fail(layer, reason);
+        if (layer.state === "failed") return;
+        // Recoverable loss: show the fallback now; the rebuild calls onReady.
+        if (layer.frame !== undefined) cancelAnimationFrame(layer.frame);
+        setState(layer, "pending");
       },
     });
   } catch (error) {
-    fail(layer, error instanceof Error ? error.message : "init-failed");
-    return;
+    return fail(layer, error instanceof Error ? error.message : "init-failed");
   }
 
-  // A terminal error can arrive before createShader resolves; nothing else
-  // holds this instance then.
-  if (layer.state === "failed") {
-    shader.destroy();
-    return;
-  }
+  // A terminal onError can arrive before createShader resolves (Shaders always
+  // reports a failure there); nothing else holds this instance then.
+  if (layer.state === "failed") return shader.destroy();
   layer.shader = shader;
 
-  // createShader pins the canvas to its current size with inline px styles;
-  // drop them so the CSS sizes (viewport, clamp) keep applying on resize. The
-  // library's own ResizeObserver then follows the canvas.
+  // createShader pins the canvas with inline px sizes; drop them so the CSS
+  // sizes keep applying (the library's ResizeObserver follows the canvas).
   layer.canvas.style.removeProperty("width");
   layer.canvas.style.removeProperty("height");
-
-  const reason = shader.getFailureReason();
-  if (reason) {
-    fail(layer, reason);
-    return;
-  }
 
   // Motion or visibility may have changed while the shader was being created.
   applyMotion(layer);
@@ -225,10 +216,8 @@ const start = async () => {
   const adapter = await navigator.gpu.requestAdapter().catch(() => null);
   if (!adapter) return failAll("no-adapter");
 
-  const [{ createShader }, sdfUrl] = await Promise.all([import("shaders/js"), loadSdf()]);
-
+  const [{ createShader }, sdf] = await Promise.all([import("shaders/js"), loadSdf()]);
   const still = isStill();
-  const shared = { disableTelemetry: true };
 
   await Promise.all([
     mount(
@@ -244,7 +233,7 @@ const start = async () => {
                 props: {
                   shapeType: "svg",
                   shape: JSON.stringify({ type: "svg", svgUrl: "/brand/logo.svg" }),
-                  shapeSdfUrl: sdfUrl,
+                  shapeSdfUrl: sdf,
                   tint: "#D6F1FF",
                   warmColor: "#FFA94D",
                   coolColor: "#0B96E0",
@@ -261,7 +250,7 @@ const start = async () => {
               },
             ],
           },
-          { ...shared, ...callbacks, toneMapping: "aces" },
+          { ...callbacks, disableTelemetry: true, toneMapping: "aces" },
         ),
       // The first frames can come before the SDF is on the GPU.
       () => watchForMark(logo),
@@ -298,25 +287,16 @@ const start = async () => {
               },
               {
                 type: "ZoomBlur",
-                id: ZOOM_BLUR_ID,
-                props: {
-                  dispersion: 0.5,
-                  focus: 0.7,
-                  intensity: 42,
-                },
+                id: "zoom-blur",
+                props: { dispersion: 0.5, focus: 0.7, intensity: 42 },
               },
             ],
           },
-          { ...shared, ...callbacks, toneMapping: "neutral" },
+          { ...callbacks, disableTelemetry: true, toneMapping: "neutral" },
         ),
       () => setReady(background),
     ),
   ]);
 };
 
-reducedMotion.addEventListener("change", () => layers.forEach(applyMotion));
-document.addEventListener("visibilitychange", () => layers.forEach(applyMotion));
-
-start().catch((error) => {
-  failAll(error instanceof Error ? error.message : "start-failed");
-});
+start().catch((error) => failAll(error instanceof Error ? error.message : "start-failed"));
