@@ -202,10 +202,14 @@ const pageDescription =
     visibility: hidden;
   }
 
+  /*
+   * Fade only on the way into a shader. Falling back (device loss, failure)
+   * is instant, so the flat mark is never fading in over an empty box.
+   */
   @media (prefers-reduced-motion: no-preference) {
-    .background,
-    .logo-canvas,
-    .logo-fallback {
+    :root[data-logo-shader="ready"] .logo-canvas,
+    :root[data-logo-shader="ready"] .logo-fallback,
+    :root[data-background-shader="ready"] .background {
       transition: opacity 600ms ease;
     }
   }
