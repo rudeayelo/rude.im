@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.0.6"
+    "astro": "^7.0.6",
+    "shaders": "^4.0.7"
   }
 }
