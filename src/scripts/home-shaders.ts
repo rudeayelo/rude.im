@@ -228,6 +228,9 @@ const mount = async (
     fail(layer, reason);
     return;
   }
+
+  // Motion or visibility may have changed while the shader was being created.
+  applyMotion(layer);
 };
 
 const start = async () => {
