@@ -215,6 +215,12 @@ const mount = async (
     return;
   }
 
+  // A terminal error can arrive before createShader resolves; nothing else
+  // holds this instance then.
+  if (layer.state === "failed") {
+    shader.destroy();
+    return;
+  }
   layer.shader = shader;
 
   // createShader pins the canvas to its current size with inline px styles;
