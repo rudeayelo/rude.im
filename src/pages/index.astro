@@ -1,9 +1,14 @@
 ---
+import "../styles/allo.css";
 import "../styles/links.css";
+import "../styles/typography.css";
 
-const pageTitle = "Rude Ayelo / Experiments";
+// Drop the Ironhack quote by flipping this to false.
+const SHOW_QUOTE = true;
+
+const pageTitle = "Rude Ayelo";
 const pageDescription =
-  "A lightweight personal hub for frontend, UX and web platform experiments by Rude Ayelo.";
+  "I lead teams building products at scale, aligning leadership, product vision and UX to drive clarity, quality and momentum.";
 ---
 
 <!doctype html>
@@ -11,7 +16,8 @@ const pageDescription =
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#181A1B" />
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={pageDescription} />
     <meta property="og:type" content="website" />
@@ -19,171 +25,327 @@ const pageDescription =
     <meta property="og:description" content={pageDescription} />
     <meta name="twitter:card" content="summary" />
     <title>{pageTitle}</title>
+    <link
+      rel="preload"
+      href="/fonts/Allo-Rond40-Regular-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <script is:inline>
+      // Layout exploration: ?layout=a|b|centered picks a desktop variant.
       {
-        const storageKey = "rude-theme";
-        const storedTheme = localStorage.getItem(storageKey);
-        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-        const theme = storedTheme === "light" || storedTheme === "dark"
-          ? storedTheme
-          : systemTheme;
-
-        document.documentElement.dataset.theme = theme;
-        document.querySelector('meta[name="color-scheme"]').content = theme;
+        const layout = new URLSearchParams(location.search).get("layout");
+        if (["a", "b", "centered"].includes(layout)) {
+          document.documentElement.dataset.layout = layout;
+        }
       }
     </script>
   </head>
   <body>
-    <main>
-      <button id="theme-toggle" type="button">✧ Toggle dark mode</button>
-      <p>Hi — I’m Rude Ayelo.</p>
-      <p>
-        I lead teams building products at scale, aligning leadership, frontend
-        architecture and UX to drive clarity, quality and momentum.
-      </p>
-      <p>Engineering lead at <a href="https://g2.com">G2</a></p>
-      <section aria-labelledby="quote-label">
-        <p id="quote-label">I was once told</p>
-        <blockquote>
-          <p>“You’re not rude at all”</p>
-          <footer>— Ironhack student, 2015</footer>
-        </blockquote>
-      </section>
-      <pre>│ Flight  │ Destination ↑           │ Departing  │ Gate  │ Status       │
-├─────────┼─────────────────────────┼────────────┼───────┼──────────────┤
-│ LH789   │ EUR Europa 1            │ 13:45      │ Z23   │ Delayed      │
-│ XX123   │ KBA Kuiper Alpha        │ 08:00      │ 22    │ On Time      │</pre>
-      <pre aria-label="A rounded box drawn entirely with text characters">╭──────────────────────────────────────╮
-│ Terminal surface / experiment 001    │
-│                                      │
-│ Everything here is made out of type. │
-│ No borders. No radius. Just glyphs.  │
-╰──────────────────────────────────────╯</pre>
-      <pre>░░░░░░░░░░
-▒▒▒▒▒▒▒▒▒▒
-▓▓▓▓▓▓▓▓▓▓</pre>
-      <section aria-label="Typography size and tracking tests">
-        <p class="type-test-120">Rude Ayelo</p>
-        <p class="type-test-56">Rude Ayelo</p>
-        <p class="type-test-11">Rude Ayelo</p>
-      </section>
+    <canvas class="background" data-background-canvas aria-hidden="true"></canvas>
+    <main class="card type-body">
+      <div class="mark">
+        <h1 class="logo">
+          <span class="logo-mark" role="img" aria-label="Rude Ayelo">
+            <span class="logo-fallback"></span>
+            <canvas class="logo-canvas" data-logo-canvas></canvas>
+          </span>
+        </h1>
+      </div>
+      <div class="copy">
+        <p>
+          I lead teams building products at scale, aligning leadership, product
+          vision and UX to drive clarity, quality and momentum.
+        </p>
+        <p>Engineering lead at <a href="https://g2.com">G2</a></p>
+        {
+          SHOW_QUOTE && (
+            <figure class="quote">
+              <figcaption>I was once told</figcaption>
+              <blockquote>
+                <p>“You’re not rude at all”</p>
+              </blockquote>
+              <p>— Ironhack student, 2015</p>
+            </figure>
+          )
+        }
+      </div>
     </main>
     <script>
-      const storageKey = "rude-theme";
-      const root = document.documentElement;
-      const colorScheme = document.querySelector('meta[name="color-scheme"]');
-      const toggle = document.querySelector("#theme-toggle");
-      const systemPreference = window.matchMedia("(prefers-color-scheme: dark)");
-
-      const renderToggle = () => {
-        const isDark = root.dataset.theme === "dark";
-        toggle.textContent = isDark
-          ? "✦ Toggle light mode"
-          : "✧ Toggle dark mode";
-        toggle.setAttribute("aria-pressed", String(isDark));
-      };
-
-      const applyTheme = (theme) => {
-        root.dataset.theme = theme;
-        colorScheme.setAttribute("content", theme);
-        renderToggle();
-      };
-
-      toggle.addEventListener("click", () => {
-        const theme = root.dataset.theme === "dark" ? "light" : "dark";
-
-        localStorage.setItem(storageKey, theme);
-        applyTheme(theme);
-      });
-
-      systemPreference.addEventListener("change", (event) => {
-        if (!localStorage.getItem(storageKey)) {
-          applyTheme(event.matches ? "dark" : "light");
-        }
-      });
-
-      renderToggle();
+      import "../scripts/home-shaders";
     </script>
   </body>
 </html>
 
 <style is:global>
-  @font-face {
-    font-family: "Departure Mono";
-    src: url("/fonts/DepartureMono-Regular.woff2") format("woff2");
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-  }
-
   :root {
-    color-scheme: light dark;
-    --background: #f4f5f5;
-    --text: #001e33;
-    --link: #566268;
+    color-scheme: dark;
+    --background: #181a1b;
+    --text: #869399;
+    /* Never darker than the text; links.css adds the ↗ so colour isn't the only cue. */
+    --link: #a7adb0;
+    --link-hover: #e4e6e7;
+    --logo-tint: #d6f1ff;
+    /* Phones: lettermark width (it bleeds past both edges) and the gap above its visible top. */
+    --mark-size-mobile: 140vw;
+    --mark-top-mobile: 6svh;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme]) {
-      --background: #111213;
-      --text: #e4e6e7;
-      --link: #a7adb0;
-    }
-  }
-
-  :root[data-theme="light"] {
-    color-scheme: light;
-  }
-
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --background: #111213;
-    --text: #e4e6e7;
-    --link: #a7adb0;
-  }
-
   body {
+    margin: 0;
     background: var(--background);
     color: var(--text);
-    font-family: "Departure Mono", monospace;
-    font-size: 16.5px;
-    font-size-adjust: from-font;
-  }
-
-  button {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: inherit;
-    font: inherit;
   }
 
   a {
     color: var(--link);
   }
 
-  pre {
-    font-family: inherit;
-    font-size: inherit;
+  a:hover {
+    color: var(--link-hover);
   }
 
-  .type-test-120 {
-    font-size: 120px;
-    letter-spacing: -10px;
+  a:focus-visible {
+    outline: 1px solid currentColor;
+    outline-offset: 4px;
+  }
+</style>
+
+<style>
+  /*
+   * The background is soft, zoom-blurred cloth and is by far the most
+   * expensive layer, so it renders at about half the CSS resolution (a
+   * smaller canvas scaled up) whatever the screen density.
+   */
+  .background {
+    --downscale: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: calc(100% / var(--downscale));
+    height: calc(100% / var(--downscale));
+    scale: var(--downscale);
+    transform-origin: 0 0;
+    opacity: 0;
   }
 
-  .type-test-56 {
-    font-size: 56px;
-    letter-spacing: -5px;
+  @media (min-resolution: 1.5dppx) {
+    .background {
+      --downscale: 3;
+    }
   }
 
-  .type-test-11 {
-    font-size: 11px;
-    text-transform: uppercase;
+  @media (min-resolution: 2dppx) {
+    .background {
+      --downscale: 4;
+    }
+  }
+
+  /* Tablet (601–1023 px), and the centered baseline: mark above, text below. */
+  .card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2lh;
+    min-height: 100svh;
+    padding: 48px 16px;
+    /* The logo canvas is twice the mark; its transparent edge mustn't add scroll. */
+    overflow-y: clip;
+    /* The homepage reads in Allo; .type-body keeps the size and line height. */
+    font-family: "Allo", system-ui, sans-serif;
+    text-align: center;
+  }
+
+  /*
+   * The mark's own wrapper: full width, and it clips the mark where it bleeds.
+   * It is also the size container the logo canvas is measured against.
+   */
+  .mark {
+    container-type: inline-size;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    overflow-x: clip;
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1lh;
+    /* em, not ch: the width must not change when the web font swaps in. */
+    max-width: 24.25em;
+  }
+
+  .copy p {
+    margin: 0;
+  }
+
+  /*
+   * The layout box is exactly the lettermark (572 × 505); the fallback mark
+   * fills it, rotated to match the chrome, so the fallback → chrome swap never
+   * moves. Chrome draws the mark relative to its canvas height: at scale 0.55
+   * the mark fills this box when the canvas is twice the box tall, and the
+   * chrome's look (bevel, doming) depends on that ratio, so the height stays
+   * 2×. The width doesn't change the mark, so it is capped at the wrapper:
+   * Shaders renders a canvas larger than the viewport at reduced resolution
+   * (by viewport ÷ canvas size), and a bleeding mark would otherwise blur.
+   */
+  .logo {
+    --logo-width: clamp(168px, 44vw, 264px);
+    position: relative;
+    flex: none;
+    width: var(--logo-width);
+    aspect-ratio: 572 / 505;
+    margin: 0;
+  }
+
+  .logo-mark {
+    position: absolute;
+    inset: 0;
+  }
+
+  .logo-fallback {
+    position: absolute;
+    inset: 0;
+    background: var(--logo-tint);
+    opacity: 0.72;
+    mask: url("/brand/logo.svg") center / contain no-repeat;
+    rotate: -7deg;
+  }
+
+  .logo-canvas {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(100cqw, calc(var(--logo-width) * 2));
+    height: calc(var(--logo-width) * 2);
+    translate: -50% -50%;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  :root[data-logo-shader="ready"] .logo-canvas,
+  :root[data-background-shader="ready"] .background {
+    opacity: 1;
+  }
+
+  :root[data-logo-shader="ready"] .logo-fallback,
+  :root[data-logo-shader="failed"] .logo-canvas,
+  :root[data-background-shader="failed"] .background {
+    opacity: 0;
+  }
+
+  :root[data-logo-shader="failed"] .logo-canvas,
+  :root[data-background-shader="failed"] .background {
+    visibility: hidden;
+  }
+
+  /*
+   * Fade only on the way into a shader. Falling back (device loss, failure)
+   * is instant, so the flat mark is never fading in over an empty box.
+   */
+  @media (prefers-reduced-motion: no-preference) {
+    :root[data-logo-shader="ready"] .logo-canvas,
+    :root[data-logo-shader="ready"] .logo-fallback,
+    :root[data-background-shader="ready"] .background {
+      transition: opacity 600ms ease;
+    }
+  }
+
+  .quote {
+    margin: 1lh 0 0;
+  }
+
+  .quote blockquote {
+    margin: 0;
+  }
+
+  /* Phones: a huge mark near the top, bleeding past both edges; text below. */
+  @media (max-width: 600px) {
+    .card {
+      justify-content: flex-start;
+      gap: 1.5lh;
+      /* The 353° rotation lifts the mark ~3.1 % of its width above its box. */
+      padding: calc(var(--mark-top-mobile) + var(--mark-size-mobile) * 0.031) 0 48px;
+    }
+
+    .logo {
+      --logo-width: var(--mark-size-mobile);
+    }
+
+    .copy {
+      padding: 0 24px;
+    }
+  }
+
+  /*
+   * Desktop, A "Pair" (default): mark and text as one centered, contained
+   * pair, the text vertically centred on the mark.
+   */
+  @media (min-width: 1024px) {
+    :root:not([data-layout="b"], [data-layout="centered"]) .card {
+      display: grid;
+      grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
+      align-items: center;
+      gap: 0 5vw;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 6vw;
+      text-align: start;
+    }
+
+    /* At most half the viewport tall, so the 2× canvas renders at full resolution. */
+    :root:not([data-layout="b"], [data-layout="centered"]) .logo {
+      --logo-width: min(34vw, 440px, 50svh);
+    }
+  }
+
+  /*
+   * Desktop, B "Corner bleed": the mark cropped by the top-left corner, like
+   * the phone layout; the text centred in the space to its right.
+   */
+  @media (min-width: 1024px) {
+    :root[data-layout="b"] .card {
+      /* Height-capped: the canvas is 2× the mark, ~1.4 viewports tall (≈ 0.7 resolution). */
+      --mark-b: min(72vw, 70svh);
+      display: grid;
+      grid-template-columns: calc(var(--mark-b) * 0.88) minmax(0, 1fr);
+      align-items: center;
+      gap: 0;
+      padding: 0;
+      text-align: start;
+    }
+
+    /* Sized by the row, not by the oversized mark, which it clips. */
+    :root[data-layout="b"] .mark {
+      contain: size;
+      align-self: stretch;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: clip;
+    }
+
+    :root[data-layout="b"] .logo {
+      --logo-width: var(--mark-b);
+      margin: calc(var(--logo-width) * -0.2) 0 0 calc(var(--logo-width) * -0.18);
+    }
+
+    /* Off-centre in its wrapper, so the canvas width comes from the mark (still under the viewport width). */
+    :root[data-layout="b"] .logo-canvas {
+      width: calc(var(--logo-width) * 1.2);
+    }
+
+    :root[data-layout="b"] .copy {
+      justify-self: center;
+      padding: 48px 6vw;
+    }
   }
 </style>
