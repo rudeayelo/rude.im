@@ -32,6 +32,15 @@ const pageDescription =
       type="font/woff2"
       crossorigin
     />
+    <script is:inline>
+      // Layout exploration: ?layout=a|b|centered picks a desktop variant.
+      {
+        const layout = new URLSearchParams(location.search).get("layout");
+        if (["a", "b", "centered"].includes(layout)) {
+          document.documentElement.dataset.layout = layout;
+        }
+      }
+    </script>
   </head>
   <body>
     <canvas class="background" data-background-canvas aria-hidden="true"></canvas>
@@ -137,7 +146,7 @@ const pageDescription =
     }
   }
 
-  /* Tablet (601–1023 px): mark above, text below. */
+  /* Tablet (601–1023 px), and the centered baseline: mark above, text below. */
   .card {
     box-sizing: border-box;
     display: flex;
@@ -278,11 +287,11 @@ const pageDescription =
   }
 
   /*
-   * Desktop, "Pair": mark and text as one centered, contained
+   * Desktop, A "Pair" (default): mark and text as one centered, contained
    * pair, the text vertically centred on the mark.
    */
   @media (min-width: 1024px) {
-    .card {
+    :root:not([data-layout="b"], [data-layout="centered"]) .card {
       display: grid;
       grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
       align-items: center;
@@ -294,8 +303,49 @@ const pageDescription =
     }
 
     /* At most half the viewport tall, so the 2× canvas renders at full resolution. */
-    .logo {
+    :root:not([data-layout="b"], [data-layout="centered"]) .logo {
       --logo-width: min(34vw, 440px, 50svh);
+    }
+  }
+
+  /*
+   * Desktop, B "Corner bleed": the mark cropped by the top-left corner, like
+   * the phone layout; the text centred in the space to its right.
+   */
+  @media (min-width: 1024px) {
+    :root[data-layout="b"] .card {
+      /* Height-capped: the canvas is 2× the mark, ~1.4 viewports tall (≈ 0.7 resolution). */
+      --mark-b: min(72vw, 70svh);
+      display: grid;
+      grid-template-columns: calc(var(--mark-b) * 0.88) minmax(0, 1fr);
+      align-items: center;
+      gap: 0;
+      padding: 0;
+      text-align: start;
+    }
+
+    /* Sized by the row, not by the oversized mark, which it clips. */
+    :root[data-layout="b"] .mark {
+      contain: size;
+      align-self: stretch;
+      align-items: flex-start;
+      justify-content: flex-start;
+      overflow: clip;
+    }
+
+    :root[data-layout="b"] .logo {
+      --logo-width: var(--mark-b);
+      margin: calc(var(--logo-width) * -0.2) 0 0 calc(var(--logo-width) * -0.18);
+    }
+
+    /* Off-centre in its wrapper, so the canvas width comes from the mark (still under the viewport width). */
+    :root[data-layout="b"] .logo-canvas {
+      width: calc(var(--logo-width) * 1.2);
+    }
+
+    :root[data-layout="b"] .copy {
+      justify-self: center;
+      padding: 48px 6vw;
     }
   }
 </style>
