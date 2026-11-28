@@ -1,0 +1,124 @@
+---
+import "../styles/links.css";
+import "../styles/typography.css";
+
+const pageTitle = "Rude Ayelo / Not found";
+const pageDescription = "This page does not exist on rude.im.";
+// 38 columns fit a 390px viewport at 16.5px Departure Mono.
+const terminalWidth = 38;
+const contentWidth = terminalWidth - 6;
+const horizontalRule = "─".repeat(terminalWidth - 2);
+const frameTop = `╭${horizontalRule}╮`;
+const frameDivider = `├${horizontalRule}┤`;
+const frameBottom = `╰${horizontalRule}╯`;
+const frameLine = (content = "") =>
+  `│  ${content.padEnd(contentWidth, " ")}  │`;
+const homeText = "Back home";
+const homeLabel = `← ${homeText}`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={pageDescription} />
+    <meta name="robots" content="noindex" />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      {
+        const storedTheme = localStorage.getItem("rude-theme");
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        const theme = storedTheme === "light" || storedTheme === "dark"
+          ? storedTheme
+          : systemTheme;
+
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="color-scheme"]').content = theme;
+      }
+    </script>
+  </head>
+  <body class="type-body">
+    <main>
+      <h1 class="visually-hidden">Page not found</h1>
+      <pre class="terminal"><span aria-hidden="true">{frameTop}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span class="type-heading" aria-hidden="true">{frameLine("404 / Not found")}</span>
+<span aria-hidden="true">{frameDivider}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span>{frameLine("Nothing lives at this address.")}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span>{"│  "}<a class="link-back" href="/">{homeText}</a>{" ".repeat(contentWidth - homeLabel.length)}{"  │"}</span>
+<span aria-hidden="true">{frameLine()}</span>
+<span aria-hidden="true">{frameBottom}</span></pre>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(:root) {
+    color-scheme: light dark;
+    --background: #f4f5f5;
+    --text: #001e33;
+    --link: #566268;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme])) {
+      --background: #111213;
+      --text: #e4e6e7;
+      --link: #a7adb0;
+    }
+  }
+
+  :global(:root[data-theme="light"]) {
+    color-scheme: light;
+  }
+
+  :global(:root[data-theme="dark"]) {
+    color-scheme: dark;
+    --background: #111213;
+    --text: #e4e6e7;
+    --link: #a7adb0;
+  }
+
+  :global(body) {
+    margin: 0;
+    padding: 0;
+    background: var(--background);
+    color: var(--text);
+  }
+
+  :global(a) {
+    color: var(--link);
+  }
+
+  .terminal {
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow-x: auto;
+    color: inherit;
+    font: inherit;
+    white-space: pre;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
