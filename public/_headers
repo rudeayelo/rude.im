@@ -7,10 +7,6 @@
   X-Frame-Options: SAMEORIGIN
   Strict-Transport-Security: max-age=31536000
 
-# Vite-hashed bundles: the file name changes whenever the content does.
-/_astro/*
-  Cache-Control: public, max-age=31536000, immutable
-
 # Stable file names (fonts, logo, SDF): cache for a day, then revalidate.
 /fonts/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800
