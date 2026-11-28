@@ -1,0 +1,18 @@
+// Cloudflare Workers with static assets: no Worker script, only the Astro build.
+// Deployed by .github/workflows/ci.yml on push to main.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rude-im",
+  "compatibility_date": "2026-11-28",
+  "assets": {
+    "directory": "./dist",
+    // Unknown paths get dist/404.html with HTTP 404.
+    "not_found_handling": "404-page"
+  },
+  // Custom domains create the DNS records and certificates. The www -> apex
+  // 301 is a zone redirect rule, not repo config: see README "Deployment".
+  "routes": [
+    { "pattern": "rude.im", "custom_domain": true },
+    { "pattern": "www.rude.im", "custom_domain": true }
+  ]
+}

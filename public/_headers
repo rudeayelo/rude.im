@@ -1,0 +1,10 @@
+# Cloudflare Workers static assets headers. Only security headers: every
+# asset keeps the Workers default cache (revalidate with the ETag), so a
+# changed bundle, font, logo or SDF is never served stale next to fresh HTML.
+# No Content-Security-Policy: see README "Deployment".
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Strict-Transport-Security: max-age=31536000

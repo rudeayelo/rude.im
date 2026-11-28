@@ -22,3 +22,36 @@ npm run preview
 4. Run `npm run build`.
 
 Experiment metadata is kept in `src/data/experiments.ts` for future indexing.
+
+## Deployment
+
+The site is a static Astro build served by Cloudflare Workers with static
+assets (worker `rude-im`, no Worker script). The config is `wrangler.jsonc`.
+
+- Every pull request runs the `build` job in `.github/workflows/ci.yml`:
+  `npm ci`, `npm run build` and `npx wrangler deploy --dry-run`.
+- Every push to `main` runs `build`, then `deploy`, which runs
+  `npx wrangler deploy` in the GitHub deployment environment `production`.
+  The secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` live in that
+  environment, which is restricted to the `main` branch in the repository
+  settings. If either secret is missing, the job fails.
+- `wrangler` is pinned as a dev dependency. Run the production setup locally
+  with `npm run build && npx wrangler dev`.
+- Unknown paths get `src/pages/404.astro` with HTTP 404
+  (`not_found_handling: "404-page"`).
+- `public/_headers` sets only security headers. Every file keeps the Workers
+  default cache, `max-age=0, must-revalidate` with an ETag, so a changed
+  font, logo or SDF never shows up stale next to fresh HTML. Hashed
+  `/_astro/*` files get no long cache either: `_headers` matches the request
+  URL, not the status, so a missing chunk's 404 page would be cached as
+  immutable too.
+- There is no Content-Security-Policy. The page uses inline theme scripts.
+  The shader runtime imports chunks with `import()`, loads the SDF from a
+  `blob:` URL and probes `new Function` (telemetry is turned off with
+  `disableTelemetry: true`).
+  A policy that allows all of that adds little protection, and a stricter one
+  breaks the homepage.
+- `rude.im` and `www.rude.im` are Worker custom domains. A Cloudflare
+  redirect rule on the zone sends `www` to the apex with a 301. Assets-only
+  Workers cannot redirect by hostname, so this rule is managed in the
+  Cloudflare dashboard, not in this repository.
