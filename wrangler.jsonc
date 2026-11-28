@@ -9,9 +9,8 @@
     // Unknown paths get dist/404.html with HTTP 404.
     "not_found_handling": "404-page"
   },
-  // Custom domains create the DNS records and certificates. www.rude.im ->
-  // rude.im is a 301 from a Cloudflare redirect rule on the zone, because
-  // assets-only Workers cannot redirect by hostname (see README).
+  // Custom domains create the DNS records and certificates. The www -> apex
+  // 301 is a zone redirect rule, not repo config: see README "Deployment".
   "routes": [
     { "pattern": "rude.im", "custom_domain": true },
     { "pattern": "www.rude.im", "custom_domain": true }
