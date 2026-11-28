@@ -36,28 +36,32 @@ const pageDescription =
   <body>
     <canvas class="background" data-background-canvas aria-hidden="true"></canvas>
     <main class="card type-body">
-      <h1 class="logo">
-        <span class="logo-mark" role="img" aria-label="Rude Ayelo">
-          <span class="logo-fallback"></span>
-          <canvas class="logo-canvas" data-logo-canvas></canvas>
-        </span>
-      </h1>
-      <p>
-        I lead teams building products at scale, aligning leadership, product
-        vision and UX to drive clarity, quality and momentum.
-      </p>
-      <p>Engineering lead at <a href="https://g2.com">G2</a></p>
-      {
-        SHOW_QUOTE && (
-          <figure class="quote">
-            <figcaption>I was once told</figcaption>
-            <blockquote>
-              <p>“You’re not rude at all”</p>
-            </blockquote>
-            <p>— Ironhack student, 2015</p>
-          </figure>
-        )
-      }
+      <div class="mark">
+        <h1 class="logo">
+          <span class="logo-mark" role="img" aria-label="Rude Ayelo">
+            <span class="logo-fallback"></span>
+            <canvas class="logo-canvas" data-logo-canvas></canvas>
+          </span>
+        </h1>
+      </div>
+      <div class="copy">
+        <p>
+          I lead teams building products at scale, aligning leadership, product
+          vision and UX to drive clarity, quality and momentum.
+        </p>
+        <p>Engineering lead at <a href="https://g2.com">G2</a></p>
+        {
+          SHOW_QUOTE && (
+            <figure class="quote">
+              <figcaption>I was once told</figcaption>
+              <blockquote>
+                <p>“You’re not rude at all”</p>
+              </blockquote>
+              <p>— Ironhack student, 2015</p>
+            </figure>
+          )
+        }
+      </div>
     </main>
     <script>
       import "../scripts/home-shaders";
@@ -74,6 +78,9 @@ const pageDescription =
     --link: #a7adb0;
     --link-hover: #e4e6e7;
     --logo-tint: #d6f1ff;
+    /* Phones: lettermark width (it bleeds past both edges) and the gap above its visible top. */
+    --mark-size-mobile: 140vw;
+    --mark-top-mobile: 6svh;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
@@ -130,40 +137,65 @@ const pageDescription =
     }
   }
 
+  /* Tablet (601–1023 px): mark above, text below. */
   .card {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1lh;
+    gap: 2lh;
     min-height: 100svh;
-    /* em, not ch: the width must not change when the web font swaps in. */
-    max-width: 24.25em;
-    margin: 0 auto;
     padding: 48px 16px;
-    overflow-x: clip;
+    /* The logo canvas is twice the mark; its transparent edge mustn't add scroll. */
+    overflow-y: clip;
     /* The homepage reads in Allo; .type-body keeps the size and line height. */
     font-family: "Allo", system-ui, sans-serif;
     text-align: center;
   }
 
-  .card p {
+  /*
+   * The mark's own wrapper: full width, and it clips the mark where it bleeds.
+   * It is also the size container the logo canvas is measured against.
+   */
+  .mark {
+    container-type: inline-size;
+    display: flex;
+    align-self: stretch;
+    align-items: center;
+    justify-content: center;
+    overflow-x: clip;
+  }
+
+  .copy {
+    display: flex;
+    flex-direction: column;
+    gap: 1lh;
+    /* em, not ch: the width must not change when the web font swaps in. */
+    max-width: 24.25em;
+  }
+
+  .copy p {
     margin: 0;
   }
 
   /*
-   * The layout box is exactly the lettermark (572 × 505). At scale 0.55 the
-   * chrome mark covers about half of its canvas, so the canvas is twice the
-   * box and overflows it; the bevel and the 353° rotation never clip. The
-   * fallback mark is rotated to match, so nothing shifts when either shows.
+   * The layout box is exactly the lettermark (572 × 505); the fallback mark
+   * fills it, rotated to match the chrome, so the fallback → chrome swap never
+   * moves. Chrome draws the mark relative to its canvas height: at scale 0.55
+   * the mark fills this box when the canvas is twice the box tall, and the
+   * chrome's look (bevel, doming) depends on that ratio, so the height stays
+   * 2×. The width doesn't change the mark, so it is capped at the wrapper:
+   * Shaders renders a canvas larger than the viewport at reduced resolution
+   * (by viewport ÷ canvas size), and a bleeding mark would otherwise blur.
    */
   .logo {
     --logo-width: clamp(168px, 44vw, 264px);
     position: relative;
+    flex: none;
     width: var(--logo-width);
     aspect-ratio: 572 / 505;
-    margin: 0 0 1lh;
+    margin: 0;
   }
 
   .logo-mark {
@@ -184,7 +216,7 @@ const pageDescription =
     position: absolute;
     top: 50%;
     left: 50%;
-    width: calc(var(--logo-width) * 2);
+    width: min(100cqw, calc(var(--logo-width) * 2));
     height: calc(var(--logo-width) * 2);
     translate: -50% -50%;
     opacity: 0;
@@ -225,5 +257,45 @@ const pageDescription =
 
   .quote blockquote {
     margin: 0;
+  }
+
+  /* Phones: a huge mark near the top, bleeding past both edges; text below. */
+  @media (max-width: 600px) {
+    .card {
+      justify-content: flex-start;
+      gap: 1.5lh;
+      /* The 353° rotation lifts the mark ~3.1 % of its width above its box. */
+      padding: calc(var(--mark-top-mobile) + var(--mark-size-mobile) * 0.031) 0 48px;
+    }
+
+    .logo {
+      --logo-width: var(--mark-size-mobile);
+    }
+
+    .copy {
+      padding: 0 24px;
+    }
+  }
+
+  /*
+   * Desktop, "Pair": mark and text as one centered, contained
+   * pair, the text vertically centred on the mark.
+   */
+  @media (min-width: 1024px) {
+    .card {
+      display: grid;
+      grid-template-columns: minmax(0, 48fr) minmax(0, 52fr);
+      align-items: center;
+      gap: 0 5vw;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 6vw;
+      text-align: start;
+    }
+
+    /* At most half the viewport tall, so the 2× canvas renders at full resolution. */
+    .logo {
+      --logo-width: min(34vw, 440px, 50svh);
+    }
   }
 </style>
