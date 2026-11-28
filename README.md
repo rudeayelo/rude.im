@@ -31,8 +31,10 @@ assets (worker `rude-im`, no Worker script). The config is `wrangler.jsonc`.
 - Every pull request runs the `build` job in `.github/workflows/ci.yml`:
   `npm ci`, `npm run build` and `npx wrangler deploy --dry-run`.
 - Every push to `main` runs `build`, then `deploy`, which runs
-  `npx wrangler deploy` with the repository secrets `CLOUDFLARE_API_TOKEN`
-  and `CLOUDFLARE_ACCOUNT_ID`. If either secret is missing, the job fails.
+  `npx wrangler deploy` in the GitHub deployment environment `production`.
+  The secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` live in that
+  environment, which is restricted to the `main` branch in the repository
+  settings. If either secret is missing, the job fails.
 - `wrangler` is pinned as a dev dependency. Run the production setup locally
   with `npm run build && npx wrangler dev`.
 - Unknown paths get `src/pages/404.astro` with HTTP 404
