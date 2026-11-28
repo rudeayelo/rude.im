@@ -37,11 +37,12 @@ assets (worker `rude-im`, no Worker script). The config is `wrangler.jsonc`.
   with `npm run build && npx wrangler dev`.
 - Unknown paths get `src/pages/404.astro` with HTTP 404
   (`not_found_handling: "404-page"`).
-- `public/_headers` sets the cache and security headers. `/_astro/*` has no
-  long cache: `_headers` matches the request URL, not the status, so a missing
-  chunk's 404 page would be cached as immutable too. Hashed files revalidate
-  with their ETag instead. `/fonts/*` and `/brand/*` keep
-  stable names, so they are cached for a day.
+- `public/_headers` sets only security headers. Every file keeps the Workers
+  default cache, `max-age=0, must-revalidate` with an ETag, so a changed
+  font, logo or SDF never shows up stale next to fresh HTML. Hashed
+  `/_astro/*` files get no long cache either: `_headers` matches the request
+  URL, not the status, so a missing chunk's 404 page would be cached as
+  immutable too.
 - There is no Content-Security-Policy. The page uses inline theme scripts.
   The shader runtime imports chunks with `import()`, loads the SDF from a
   `blob:` URL, probes `new Function` and sends telemetry to `shaders.com`.
