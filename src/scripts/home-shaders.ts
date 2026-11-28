@@ -267,7 +267,7 @@ const start = async () => {
                 id: SATIN_ID,
                 props: {
                   color: "#181A1B",
-                  highlightColor: "#67696B",
+                  highlightColor: "#4F5054",
                   anisotropy: 0.21,
                   bloom: 0.28,
                   breeze: 0.53,
@@ -278,7 +278,7 @@ const start = async () => {
                   foldDirection: 198,
                   foldWidth: 0.3,
                   gloss: 0.6,
-                  lightAngle: 226,
+                  lightAngle: 290,
                   pinning: 0,
                   sheen: 0.32,
                   weave: 0.28,
