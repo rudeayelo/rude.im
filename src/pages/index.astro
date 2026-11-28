@@ -68,8 +68,10 @@ const pageDescription =
   :root {
     color-scheme: dark;
     --background: #181a1b;
-    --text: #e4e6e7;
+    --text: #869399;
+    /* Never darker than the text; links.css adds the ↗ so colour isn't the only cue. */
     --link: #a7adb0;
+    --link-hover: #e4e6e7;
     --logo-tint: #d6f1ff;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -87,7 +89,7 @@ const pageDescription =
   }
 
   a:hover {
-    color: var(--text);
+    color: var(--link-hover);
   }
 
   a:focus-visible {
