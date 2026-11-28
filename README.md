@@ -47,7 +47,8 @@ assets (worker `rude-im`, no Worker script). The config is `wrangler.jsonc`.
   immutable too.
 - There is no Content-Security-Policy. The page uses inline theme scripts.
   The shader runtime imports chunks with `import()`, loads the SDF from a
-  `blob:` URL, probes `new Function` and sends telemetry to `shaders.com`.
+  `blob:` URL and probes `new Function` (telemetry is turned off with
+  `disableTelemetry: true`).
   A policy that allows all of that adds little protection, and a stricter one
   breaks the homepage.
 - `rude.im` and `www.rude.im` are Worker custom domains. A Cloudflare
