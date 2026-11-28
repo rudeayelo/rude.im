@@ -22,3 +22,30 @@ npm run preview
 4. Run `npm run build`.
 
 Experiment metadata is kept in `src/data/experiments.ts` for future indexing.
+
+## Deployment
+
+The site is a static Astro build served by Cloudflare Workers with static
+assets (worker `rude-im`, no Worker script). The config is `wrangler.jsonc`.
+
+- Every pull request runs the `build` job in `.github/workflows/ci.yml`:
+  `npm ci`, `npm run build` and `npx wrangler deploy --dry-run`.
+- Every push to `main` runs `build`, then `deploy`, which runs
+  `npx wrangler deploy` with the repository secrets `CLOUDFLARE_API_TOKEN`
+  and `CLOUDFLARE_ACCOUNT_ID`. If either secret is missing, the job fails.
+- `wrangler` is pinned as a dev dependency. Run the production setup locally
+  with `npm run build && npx wrangler dev`.
+- Unknown paths get `src/pages/404.astro` with HTTP 404
+  (`not_found_handling: "404-page"`).
+- `public/_headers` sets the cache and security headers. Hashed `/_astro/*`
+  files are cached for a year as immutable. `/fonts/*` and `/brand/*` keep
+  stable names, so they are cached for a day.
+- There is no Content-Security-Policy. The page uses inline theme scripts.
+  The shader runtime imports chunks with `import()`, loads the SDF from a
+  `blob:` URL, probes `new Function` and sends telemetry to `shaders.com`.
+  A policy that allows all of that adds little protection, and a stricter one
+  breaks the homepage.
+- `rude.im` and `www.rude.im` are Worker custom domains. A Cloudflare
+  redirect rule on the zone sends `www` to the apex with a 301. Assets-only
+  Workers cannot redirect by hostname, so this rule is managed in the
+  Cloudflare dashboard, not in this repository.

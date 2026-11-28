@@ -10,6 +10,14 @@ from the site.
 - `npm run build` verifies the static build.
 - `npm run preview` serves the built output.
 
+## Deployment
+
+- Cloudflare Workers with static assets, configured in `wrangler.jsonc`.
+  Pushes to `main` deploy through `.github/workflows/ci.yml`; pull requests
+  only build. See `README.md` for secrets, headers and the www redirect.
+- `npm run build && npx wrangler dev` serves the production setup locally.
+- Never run `wrangler deploy` by hand without `--dry-run`.
+
 ## Experiments
 
 - The homepage is the only standardized layer.
