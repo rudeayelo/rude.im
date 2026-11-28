@@ -1,0 +1,14 @@
+/*
+ * Allo by Josh Puckett (https://allo.joshpuckett.me), SIL Open Font License 1.1
+ * (public/fonts/OFL.txt). Self-hosted static instance of allo-font 1.1.0
+ * pinned with fontTools at ROND 40, wght 400, opsz 16.5 (the homepage text
+ * size) and subset to Basic Latin, Latin-1, curly quotes, dashes, the
+ * ellipsis and arrows.
+ */
+@font-face {
+  font-family: "Allo";
+  src: url("/fonts/Allo-Rond40-Regular-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}

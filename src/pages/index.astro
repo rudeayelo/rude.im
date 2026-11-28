@@ -1,4 +1,5 @@
 ---
+import "../styles/allo.css";
 import "../styles/links.css";
 import "../styles/typography.css";
 
@@ -26,7 +27,7 @@ const pageDescription =
     <title>{pageTitle}</title>
     <link
       rel="preload"
-      href="/fonts/DepartureMono-Regular.woff2"
+      href="/fonts/Allo-Rond40-Regular-latin.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -142,6 +143,8 @@ const pageDescription =
     margin: 0 auto;
     padding: 48px 16px;
     overflow-x: clip;
+    /* The homepage reads in Allo; .type-body keeps the size and line height. */
+    font-family: "Allo", system-ui, sans-serif;
     text-align: center;
   }
 
